@@ -25,7 +25,7 @@ DesignerHub brings the fashion world online, creating a vibrant and user-friendl
   - Cancel or return items easily
 - ✅ User Profile & Preferences
   - Update profile info and delivery addresses
-  - View purchase history
+  - View purchase history..
 
 ---
 
