@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const Seller = require('../models/Seller');
+const Seller = require('../models/Seller');
 
 // Get seller dashboard details (including products)
 router.get('/:id/dashboard', async (req, res) => {
