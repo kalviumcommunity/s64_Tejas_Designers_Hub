@@ -1,16 +1,39 @@
 const express = require('express');
 const router = express.Router();
-const Seller = require('../models/Seller');
+const Seller = require('../Models/seller');
 
-// Get seller dashboard details (including products)
-router.get('/:id/dashboard', async (req, res) => {
+// @desc    Get all sellers
+// @route   GET /api/sellers
+router.get('/', async (req, res) => {
   try {
-    const seller = await Seller.findById(req.params.id).populate('products');
-    if (!seller) return res.status(404).json({ error: 'Seller not found' });
-    res.json(seller);
+    const sellers = await Seller.find();
+    res.json(sellers);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: 'Error retrieving sellers', error: err.message });
+  }
+});
+
+// @desc    Create a new seller
+// @route   POST /api/sellers
+// Make sure this path is correct
+
+// POST /api/sellers
+router.post('/', async (req, res) => {
+  try {
+    const { name, brandName, email, password } = req.body;
+
+    if (!name || !brandName || !email || !password) {
+      return res.status(400).json({ message: 'All fields are required.' });
+    }
+
+    const newSeller = new Seller({ name, brandName, email, password }); // ✅ Defined properly
+
+    await newSeller.save();
+    res.status(201).json(newSeller);
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating seller', error: error.message });
   }
 });
 
 module.exports = router;
+

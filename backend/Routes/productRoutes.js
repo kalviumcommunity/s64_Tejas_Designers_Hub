@@ -1,25 +1,50 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/Product');
+const Product = require('../Models/product');
 
-// Get all products
+// @desc    Get all products
+// @route   GET /api/products
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate('seller', 'name email');
     res.json(products);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: 'Error retrieving products', error: err.message });
   }
 });
 
-// Get product by ID
-router.get('/:id', async (req, res) => {
+// @desc    Create a new product
+// @route   POST /api/products
+router.post('/', async (req, res) => {
+  const {
+    title = "Sample Product",
+    description = "This is a sample product.",
+    price = 99.99,
+    category = "Accessories",
+    imageUrls = ["https://via.placeholder.com/300x400"],
+    stock = 10,
+    discount = 5,
+    seller, // Make sure to pass a valid seller/user ID here
+    isFeatured = false
+  } = req.body;
+
+  const newProduct = new Product({
+    title,
+    description,
+    price,
+    category,
+    imageUrls,
+    stock,
+    discount,
+    seller,
+    isFeatured
+  });
+
   try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ error: 'Product not found' });
-    res.json(product);
+    const savedProduct = await newProduct.save();
+    res.status(201).json(savedProduct);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: 'Error creating product', error: err.message });
   }
 });
 
