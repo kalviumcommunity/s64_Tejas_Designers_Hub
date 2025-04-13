@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const sellerSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', unique: true },
+  name: { type: String, required: true },
   brandName: { type: String, required: true },
-  isApproved: { type: Boolean, default: false },
-  earnings: { type: Number, default: 0 },
-  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
-}, { timestamps: true });
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true }
+});
 
-module.exports = mongoose.model('Seller', sellerSchema);
+const Seller = mongoose.model('Seller', sellerSchema);
+module.exports = Seller;
