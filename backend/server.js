@@ -11,5 +11,5 @@ const PORT = process.env.PORT || 5000;
 app.get('/', (req, res) => res.send('DesignerHub Backend Running!'));
 
 app.listen(PORT, () => {
-  console.log(Server running on port ${PORT});
+  console.log(`Server running on port ${PORT}`);
 });
