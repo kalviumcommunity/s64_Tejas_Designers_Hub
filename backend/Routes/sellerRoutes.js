@@ -35,5 +35,25 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+    try {
+      const updatedSeller = await Seller.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: req.body, // Apply updates from request body
+        },
+        { new: true, runValidators: true } // Return the updated document
+      );
+  
+      if (!updatedSeller) {
+        return res.status(404).json({ message: 'Seller not found' });
+      }
+  
+      res.json(updatedSeller);
+    } catch (err) {
+      res.status(500).json({ message: 'Error updating seller', error: err.message });
+    }
+  });
+
 module.exports = router;
 
