@@ -61,22 +61,22 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
-    try {
-      const updatedOrder = await Order.findByIdAndUpdate(
-        req.params.id,
-        { $set: req.body },
-        { new: true, runValidators: true }
-      );
+// router.put('/:id', async (req, res) => {
+//     try {
+//       const updatedOrder = await Order.findByIdAndUpdate(
+//         req.params.id,
+//         { $set: req.body },
+//         { new: true, runValidators: true }
+//       );
   
-      if (!updatedOrder) {
-        return res.status(404).json({ message: 'Order not found' });
-      }
+//       if (!updatedOrder) {
+//         return res.status(404).json({ message: 'Order not found' });
+//       }
   
-      res.status(200).json(updatedOrder);
-    } catch (err) {
-      res.status(500).json({ message: 'Error updating order', error: err.message });
-    }
-  });
+//       res.status(200).json(updatedOrder);
+//     } catch (err) {
+//       res.status(500).json({ message: 'Error updating order', error: err.message });
+//     }
+//   });
 
 module.exports = router;
