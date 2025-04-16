@@ -49,45 +49,45 @@ router.post('/', async (req, res) => {
 });
 
 // PUT: Update a product by ID
-// router.put('/:id', async (req, res) => {
-//     const productId = req.params.id;
+router.put('/:id', async (req, res) => {
+    const productId = req.params.id;
   
-//     const {
-//       title,
-//       description,
-//       price,
-//       category,
-//       imageUrls,
-//       stock,
-//       discount,
-//       isFeatured
-//     } = req.body;
+    const {
+      title,
+      description,
+      price,
+      category,
+      imageUrls,
+      stock,
+      discount,
+      isFeatured
+    } = req.body;
   
-//     try {
-//       const updatedProduct = await Product.findByIdAndUpdate(
-//         productId,
-//         {
-//           title,
-//           description,
-//           price,
-//           category,
-//           imageUrls,
-//           stock,
-//           discount,
-//           isFeatured
-//         },
-//         { new: true, runValidators: true } // return updated doc and validate
-//       );
+    try {
+      const updatedProduct = await Product.findByIdAndUpdate(
+        productId,
+        {
+          title,
+          description,
+          price,
+          category,
+          imageUrls,
+          stock,
+          discount,
+          isFeatured
+        },
+        { new: true, runValidators: true } // return updated doc and validate
+      );
   
-//       if (!updatedProduct) {
-//         return res.status(404).json({ message: 'Product not found' });
-//       }
+      if (!updatedProduct) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
   
-//       res.json({ message: 'Product updated successfully', product: updatedProduct });
-//     } catch (err) {
-//       res.status(500).json({ message: 'Error updating product', error: err.message });
-//     }
-//   });
+      res.json({ message: 'Product updated successfully', product: updatedProduct });
+    } catch (err) {
+      res.status(500).json({ message: 'Error updating product', error: err.message });
+    }
+  });
   
 
 module.exports = router;
