@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
 });
 
 // GET /api/orders - Get all orders (optional)
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const orders = await Order.find().populate('buyer').populate('products.product');
     res.status(200).json(orders);

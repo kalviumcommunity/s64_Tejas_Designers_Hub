@@ -4,7 +4,7 @@ const Product = require('../Models/product');
 
 // @desc    Get all products
 // @route   GET /api/products
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const products = await Product.find().populate('seller', 'name email');
     res.json(products);

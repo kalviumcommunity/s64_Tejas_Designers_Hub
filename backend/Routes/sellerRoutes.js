@@ -4,7 +4,7 @@ const Seller = require('../Models/seller');
 
 // @desc    Get all sellers
 // @route   GET /api/sellers
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const sellers = await Seller.find();
     res.json(sellers);
