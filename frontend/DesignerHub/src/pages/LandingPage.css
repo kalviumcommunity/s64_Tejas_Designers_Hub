@@ -1,0 +1,16 @@
+.shop-button {
+  background-color: #b4822b;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+.shop-button:hover {
+  background-color: #374151;
+}
+.info-section {
+  margin: 1rem;
+  max-width: 250px;
+  line-height: 1.4;
+}
