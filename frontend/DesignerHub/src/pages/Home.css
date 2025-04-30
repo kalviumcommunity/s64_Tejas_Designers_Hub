@@ -1,0 +1,357 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+.home-root {
+  font-family: 'Montserrat', Arial, sans-serif;
+  background: #fff;
+  min-height: 100vh;
+  text-align: center;
+}
+.home-banner {
+  width: 100vw;
+  margin: 0 0 1.2rem 0;
+  border-top-right-radius: 1.2rem;
+  border-bottom-left-radius: 1.2rem;
+  box-shadow: 0 6px 32px #0002;
+  overflow: hidden;
+  position: relative;
+  background: #e5e5e5;
+  min-height: 240px;
+  display: flex;
+  align-items: stretch;
+}
+.home-banner-img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  object-position: right top;
+  filter: brightness(0.97);
+  display: block;
+}
+.home-banner-text {
+  position: absolute;
+  left: 3vw;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: none;
+}
+.home-banner-text span {
+  font-size: 2.6rem;
+  font-family: 'Fira Mono', 'Consolas', monospace;
+  font-weight: 600;
+  letter-spacing: 0.45em;
+  color: #111;
+  text-shadow: 0 4px 16px #0005;
+  line-height: 1.1;
+}
+.home-quote {
+  text-align: center;
+  color: #444;
+  font-size: 1rem;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  margin: 1.2rem 0 0.5rem 0;
+}
+.home-model-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1.5vw;
+  margin: 1.2rem auto 2.2rem auto;
+  width: auto;
+  max-width: 700px;
+}
+.home-model-img {
+  border-radius: 0.6rem;
+  box-shadow: 0 2px 12px #0001;
+  object-fit: cover;
+  background: #eee;
+  transition: transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.2s;
+  cursor: pointer;
+  display: block;
+}
+.home-model-img-side {
+  width: 120px;
+  height: 270px;
+}
+.home-model-img-mid {
+  width: 120px;
+  height: 320px;
+}
+.home-model-img-center {
+  width: 180px;
+  height: 420px;
+  z-index: 2;
+}
+.home-model-img:hover {
+  transform: scale(1.08) translateY(-6px);
+  box-shadow: 0 8px 24px #0002, 0 2px 12px #0002;
+  z-index: 3;
+}
+.home-product-section {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto 2.2rem auto;
+  text-align: center;
+}
+.home-section-title {
+  font-family: 'Fira Mono', 'Consolas', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  color: #222;
+}
+.home-product-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2vw;
+}
+.home-product-img {
+  width: 180px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px #0002;
+  background: #eee;
+  transition: transform 0.22s, box-shadow 0.22s;
+  cursor: pointer;
+}
+.home-product-img:hover {
+  transform: scale(1.04) translateY(-4px);
+  box-shadow: 0 8px 24px #0003;
+}
+.home-collection-section {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 2.2rem auto;
+  text-align: center;
+}
+.home-collection-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1.2vw;
+  margin-top: 1.2rem;
+}
+.home-collection-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #fafafa;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px #0001;
+  padding: 0;
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  overflow: hidden;
+}
+.home-collection-item:hover {
+  box-shadow: 0 8px 24px #0002;
+  transform: scale(1.04) translateY(-4px);
+}
+.home-collection-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 1rem 1rem 0 0;
+  display: block;
+}
+.home-collection-label {
+  position: absolute;
+  left: 0.7rem;
+  bottom: 0.7rem;
+  font-size: 1.1rem;
+  font-family: 'Fira Mono', monospace;
+  font-weight: 600;
+  color: #111;
+  letter-spacing: 0.18em;
+  background: rgba(255,255,255,0.0);
+  padding: 0.1em 0.2em;
+  text-shadow: 0 2px 8px #fff8;
+  pointer-events: none;
+}
+.home-collection-center {
+  grid-row: 1 / span 2;
+  grid-column: 2 / 3;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  box-shadow: 0 2px 12px #0001;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.home-collection-center .home-collection-img {
+  width: 100%;
+  height: 100%;
+  min-height: 460px;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+.home-supported {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto 2.2rem auto;
+  text-align: center;
+}
+.home-supported-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2vw;
+  margin-top: 1.2rem;
+}
+.home-supported-box {
+  background: #fff;
+  border-radius: 0.7rem;
+  box-shadow: 0 2px 12px #0001;
+  padding: 1.2rem 2.2rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.home-supported-box:hover {
+  box-shadow: 0 8px 24px #0002;
+  transform: scale(1.06) translateY(-2px);
+}
+.home-supported-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+.home-about {
+  width: 100%;
+  background: linear-gradient(90deg, #e7b1b1 60%, #222 100%);
+  margin: 0 auto 0 auto;
+  padding: 0;
+}
+.home-about-bg {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 2.5rem 1rem;
+}
+.home-about-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #222;
+  margin-bottom: 2rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: block;
+  text-align: left;
+}
+.home-about-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2.5vw;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.home-about-img {
+  width: 320px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px #000a;
+  background: #222;
+}
+.home-about-text {
+  flex: 1;
+  font-size: 1.2rem;
+  color: #222;
+  text-align: left;
+  font-weight: 500;
+}
+.home-banner-btn {
+  margin-top: 2.2rem;
+  background: #2176ff;
+  color: #fff;
+  font-family: 'Fira Mono', 'Consolas', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  border: none;
+  border-radius: 1.5rem;
+  padding: 0.6em 2.2em;
+  box-shadow: 0 2px 12px #2176ff33;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+  outline: none;
+  pointer-events: auto;
+  display: block;
+}
+.home-banner-btn:hover, .home-banner-btn:focus {
+  background: #1856b6;
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 6px 24px #2176ff55;
+}
+@media (max-width: 900px) {
+  .home-banner-img, .home-banner { height: 120px; min-height: 120px; }
+  .home-banner-text span { font-size: 1.2rem; }
+  .home-model-row, .home-product-row, .home-collection-grid, .home-supported-row { max-width: 98vw; gap: 1vw; }
+  .home-model-img, .home-product-img, .home-collection-img { width: 70px; height: 100px; }
+  .home-about-content { flex-direction: column; gap: 1.2rem; }
+  .home-about-img { width: 180px; height: 180px; }
+  .home-collection-img { height: 120px; }
+  .home-collection-center .home-collection-img { min-height: 220px; }
+}
+@media (max-width: 600px) {
+  .home-banner-img, .home-banner { height: 70px; min-height: 70px; }
+  .home-banner-text span { font-size: 0.8rem; }
+  .home-section-title { font-size: 0.8rem; }
+  .home-model-img, .home-product-img, .home-collection-img { width: 40px; height: 60px; }
+  .home-about-title { font-size: 1.2rem; }
+  .home-about-img { width: 90px; height: 90px; }
+  .home-collection-img { height: 70px; }
+  .home-collection-center .home-collection-img { min-height: 100px; }
+}
+.home-sell-section {
+  margin: 2.5rem 0 2.5rem 0;
+  text-align: center;
+}
+.home-sell-title {
+  font-family: 'Fira Mono', 'Consolas', monospace;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #111;
+  margin-bottom: 1.5rem;
+}
+.home-sell-title b {
+  font-weight: 900;
+}
+.home-sell-btn {
+  background: #111;
+  color: #fff;
+  font-family: 'Fira Mono', 'Consolas', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5em;
+  padding: 0.5em 2em;
+  margin: 0 auto;
+  display: block;
+  box-shadow: 0 2px 8px #0002;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+}
+.home-sell-btn:hover, .home-sell-btn:focus {
+  background: #444;
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 18px #0003;
+}

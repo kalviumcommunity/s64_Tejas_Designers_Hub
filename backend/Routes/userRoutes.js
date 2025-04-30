@@ -1,66 +1,38 @@
-// userRoutes.js
-
 const express = require('express');
+const bcrypt = require('bcrypt');
 const router = express.Router();
-const User = require('../Models/user'); // Import your Mongoose User model
+const User = require('../Models/User'); // Adjust path as needed
 
-// GET: Retrieve user profile by ID (excluding password)
-router.get('/:id', async (req, res) => {
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const user = await User.findById(req.params.id).select('-password');
+    // Explicitly select password since it's hidden with select: false
+    const user = await User.findOne({ email }).select('+password');
+
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(401).json({ message: 'User not found' });
     }
-    res.json(user);
+
+    // Compare entered password with hashed password in DB
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Incorrect password' });
+    }
+
+    // Send dummy token or generate a real JWT token here
+    res.status(200).json({
+      message: 'Login successful',
+      token: 'dummy-auth-token', // Replace with JWT later if needed
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name
+      }
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
-
-// POST: Create a new user
-router.post('/', async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-
-    // Basic validation
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'All fields are required.' });
-    }
-
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(409).json({ message: 'User already exists.' });
-    }
-
-    // Create and save new user
-    const newUser = new User({ name, email, password });
-    await newUser.save();
-
-    res.status(201).json({ message: 'User created successfully', user: newUser });
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating user', error: error.message });
-  }
-});
-
-// PUT: Update an existing user by ID
-router.put('/:id', async (req, res) => {
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    res.json(updatedUser);
-  } catch (err) {
-    res.status(500).json({ message: 'Error updating user', error: err.message });
-  }
-});
-
 
 module.exports = router;

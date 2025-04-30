@@ -1,0 +1,190 @@
+.seller-signup-root {
+  min-height: 100vh;
+  background: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.seller-signup-card {
+  display: flex;
+  width: 820px;
+  min-height: 520px;
+  background: #fff;
+  border-radius: 2rem;
+  box-shadow: 0 8px 48px #a97fff33;
+  overflow: hidden;
+}
+.seller-signup-image-side {
+  flex: 1 1 0;
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-width: 320px;
+  min-height: 520px;
+  overflow: hidden;
+}
+.seller-signup-image-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 2rem 0 0 2rem;
+}
+.seller-signup-image-label {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 2.2rem;
+  color: #fff;
+  font-size: 2rem;
+  font-family: 'Pacifico', cursive;
+  text-shadow: 0 2px 12px #0008;
+  pointer-events: none;
+}
+.seller-signup-form-side {
+  flex: 1 1 0;
+  padding: 2.8rem 2.5rem 2.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #fff;
+}
+.seller-signup-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.seller-signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.seller-signup-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+.seller-signup-input {
+  width: 100%;
+  padding: 0.7em 1em;
+  border: 1.5px solid #e0d7f3;
+  border-radius: 0.7em;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  outline: none;
+  transition: border 0.18s;
+  background: #faf8ff;
+}
+.seller-signup-input:focus {
+  border: 1.5px solid #a97fff;
+}
+.seller-signup-password-row {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.seller-signup-password-toggle {
+  position: absolute;
+  right: 1.2em;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #bbb;
+  padding: 0;
+  margin-left: -2.5em;
+  margin-bottom: 0;
+  transition: color 0.18s;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.seller-signup-password-toggle:hover {
+  color: #a97fff;
+}
+.seller-signup-btn {
+  width: 100%;
+  background: #a97fff;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.7em;
+  padding: 0.8em 0;
+  margin-top: 1.2rem;
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+  box-shadow: 0 2px 12px #a97fff22;
+}
+.seller-signup-btn:hover, .seller-signup-btn:focus {
+  background: #e7b1b1;
+  color: #fff;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 24px #a97fff44;
+}
+.seller-signup-login-row {
+  text-align: center;
+  color: #bbb;
+  font-size: 0.98rem;
+  margin-top: 1.2rem;
+}
+.seller-signup-login-link {
+  color: #a97fff;
+  margin-left: 0.4em;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.18s;
+}
+.seller-signup-login-link:hover {
+  color: #e7b1b1;
+}
+@media (max-width: 900px) {
+  .seller-signup-card {
+    flex-direction: column;
+    width: 98vw;
+    min-width: unset;
+    min-height: unset;
+    border-radius: 2rem;
+  }
+  .seller-signup-image-side {
+    min-width: unset;
+    min-height: 220px;
+    height: 220px;
+    border-radius: 2rem 2rem 0 0;
+  }
+  .seller-signup-image-main {
+    border-radius: 2rem 2rem 0 0;
+  }
+  .seller-signup-image-label {
+    left: 1.2rem;
+    bottom: 1.2rem;
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 600px) {
+  .seller-signup-card {
+    width: 100vw;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .seller-signup-form-side {
+    padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+  }
+  .seller-signup-image-side {
+    height: 120px;
+    border-radius: 2rem 2rem 0 0;
+  }
+  .seller-signup-image-main {
+    border-radius: 2rem 2rem 0 0;
+  }
+}
