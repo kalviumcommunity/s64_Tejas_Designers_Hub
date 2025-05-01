@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from './context/AuthContext';
+import { AnimatePresence } from 'framer-motion';
 import Navbar from "./components/Navbar";
 // import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -17,8 +18,11 @@ import User from "./components/user";
 import DressesCollection from "./pages/DressesCollection";
 import Shop from "./pages/Shop";
 import JacketsCollection from "./pages/JacketsCollection";
+import PageTransition from "./components/PageTransition";
 
-function App() {
+// Wrapper component for AnimatePresence
+const AnimatedRoutes = () => {
+  const location = useLocation();
   const [products, setProducts] = useState([]);
 
   const handleAddProduct = (product) => {
@@ -26,27 +30,91 @@ function App() {
   };
 
   return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={
+          <PageTransition>
+            <Home />
+          </PageTransition>
+        } />
+        <Route path="/login" element={
+          <PageTransition>
+            <Login />
+          </PageTransition>
+        } />
+        <Route path="/signup" element={
+          <PageTransition>
+            <Signup />
+          </PageTransition>
+        } />
+        <Route path="/seller-login" element={
+          <PageTransition>
+            <SellerLogin />
+          </PageTransition>
+        } />
+        <Route path="/seller-signup" element={
+          <PageTransition>
+            <SellerSignup />
+          </PageTransition>
+        } />
+        <Route path="/cart" element={
+          <PageTransition>
+            <Cart />
+          </PageTransition>
+        } />
+        <Route path="/seller-dashboard" element={
+          <PageTransition>
+            <SellerDashboard />
+          </PageTransition>
+        } />
+        <Route path="/add-product" element={
+          <PageTransition>
+            <AddProduct onAddProduct={handleAddProduct} />
+          </PageTransition>
+        } />
+        <Route path="/seller-products" element={
+          <PageTransition>
+            <SellerProducts products={products} />
+          </PageTransition>
+        } />
+        <Route path="/seller-orders" element={
+          <PageTransition>
+            <SellerOrders />
+          </PageTransition>
+        } />
+        <Route path="/profile" element={
+          <PageTransition>
+            <User />
+          </PageTransition>
+        } />
+        <Route path="/collections/dresses" element={
+          <PageTransition>
+            <DressesCollection />
+          </PageTransition>
+        } />
+        <Route path="/collections/jackets" element={
+          <PageTransition>
+            <JacketsCollection />
+          </PageTransition>
+        } />
+        <Route path="/shop" element={
+          <PageTransition>
+            <Shop />
+          </PageTransition>
+        } />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
+function App() {
+  return (
     <AuthProvider>
       <Router>
-        <div className="bg-gray-100 min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col bg-gray-100">
           <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/seller-login" element={<SellerLogin />} />
-              <Route path="/seller-signup" element={<SellerSignup />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/seller-dashboard" element={<SellerDashboard />} />
-              <Route path="/add-product" element={<AddProduct onAddProduct={handleAddProduct} />} />
-              <Route path="/seller-products" element={<SellerProducts products={products} />} />
-              <Route path="/seller-orders" element={<SellerOrders />} />
-              <Route path="/profile" element={<User />} />
-              <Route path="/collections/dresses" element={<DressesCollection />} />
-              <Route path="/collections/jackets" element={<JacketsCollection />} />
-              <Route path="/shop" element={<Shop />} />
-            </Routes>
+          <main className="flex-grow pt-16">
+            <AnimatedRoutes />
           </main>
           {/* <Footer /> */}
         </div>
