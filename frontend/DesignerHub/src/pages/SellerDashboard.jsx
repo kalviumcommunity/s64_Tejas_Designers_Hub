@@ -136,7 +136,7 @@ const SellerDashboard = () => {
           <div className="dashboard-action add-product">
             <div className="action-title">Add New Product</div>
             <div className="action-desc">Quickly add a new product to your store inventory</div>
-            <button className="action-btn purple" onClick={() => navigate('/add-product')}>Add Product</button>
+            <button className="action-btn purple" onClick={() => navigate('/seller/products?action=add')}>Add Product</button>
           </div>
           <div className="dashboard-action view-analytics">
             <div className="action-title">View Analytics</div>
