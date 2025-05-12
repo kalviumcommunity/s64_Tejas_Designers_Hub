@@ -182,3 +182,130 @@ body {
 .dh-navbar-logout:hover {
   background-color: #f5f5f5;
 }
+
+/* Glassmorphism effect for navbar */
+.navbar-glass {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Animated underline for nav links */
+.nav-link-underline {
+  position: relative;
+}
+
+.nav-link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #8b5cf6, #ec4899);
+  transition: width 0.3s ease;
+}
+
+.nav-link-underline:hover::after {
+  width: 100%;
+}
+
+/* Pulse animation for notifications */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(139, 92, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+}
+
+.notification-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Smooth transition for dropdown menu */
+.nav-dropdown {
+  transform-origin: top right;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-dropdown.hidden {
+  transform: scale(0.95);
+  opacity: 0;
+}
+
+.nav-dropdown.visible {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Gradient text for brand */
+.brand-gradient-text {
+  background: linear-gradient(90deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hover effect for action buttons */
+.nav-action-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-action-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-action-button:hover::after {
+  opacity: 1;
+}
+
+/* Modern scrollbar for dropdowns */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(247, 247, 247, 0.5);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(203, 203, 203, 0.5);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(170, 170, 170, 0.5);
+}
+
+/* Mobile menu animation */
+@keyframes slideDown {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.mobile-menu-animation {
+  animation: slideDown 0.3s ease forwards;
+}

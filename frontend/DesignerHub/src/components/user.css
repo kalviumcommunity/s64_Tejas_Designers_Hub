@@ -11,7 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #eee;
 }
@@ -20,6 +20,38 @@
   margin: 0;
   color: #333;
   font-size: 1.8rem;
+}
+
+.dh-tabs {
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+}
+
+.dh-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #777;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dh-tab:hover {
+  color: #e7b1b1;
+  background-color: #f9f9f9;
+}
+
+.dh-tab.active {
+  color: #e7b1b1;
+  border-bottom-color: #e7b1b1;
+  font-weight: 600;
 }
 
 .dh-edit-button {

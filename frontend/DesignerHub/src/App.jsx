@@ -14,11 +14,20 @@ import SellerDashboard from "./pages/SellerDashboard";
 import AddProduct from "./pages/AddProduct";
 import SellerProducts from "./pages/SellerProducts";
 import SellerOrders from "./pages/SellerOrders";
+import SellerProfile from "./pages/SellerProfile";
 import User from "./components/user";
 import DressesCollection from "./pages/DressesCollection";
 import Shop from "./pages/Shop";
 import JacketsCollection from "./pages/JacketsCollection";
 import PageTransition from "./components/PageTransition";
+import { CartProvider } from './context/CartContext';
+import { SearchProvider } from './context/SearchContext';
+import ProductDetail from './pages/ProductDetail';
+import Checkout from './pages/Checkout';
+import ProtectedRoute from './components/ProtectedRoute';
+import OrderSuccess from './pages/OrderSuccess';
+import SellerLayout from './components/SellerLayout';
+import AdminDashboard from './pages/AdminDashboard';
 
 // Wrapper component for AnimatePresence
 const AnimatedRoutes = () => {
@@ -29,9 +38,16 @@ const AnimatedRoutes = () => {
     setProducts(prev => [...prev, product]);
   };
 
+  // Check if the current route is a seller route
+  const isSellerRoute = location.pathname.startsWith('/seller-');
+  
+  // Check if the current route is an admin route
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
+        {/* Regular routes with main layout */}
         <Route path="/" element={
           <PageTransition>
             <Home />
@@ -62,24 +78,18 @@ const AnimatedRoutes = () => {
             <Cart />
           </PageTransition>
         } />
-        <Route path="/seller-dashboard" element={
+        <Route path="/checkout" element={
           <PageTransition>
-            <SellerDashboard />
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
           </PageTransition>
         } />
-        <Route path="/add-product" element={
+        <Route path="/order-success" element={
           <PageTransition>
-            <AddProduct onAddProduct={handleAddProduct} />
-          </PageTransition>
-        } />
-        <Route path="/seller-products" element={
-          <PageTransition>
-            <SellerProducts products={products} />
-          </PageTransition>
-        } />
-        <Route path="/seller-orders" element={
-          <PageTransition>
-            <SellerOrders />
+            <ProtectedRoute>
+              <OrderSuccess />
+            </ProtectedRoute>
           </PageTransition>
         } />
         <Route path="/profile" element={
@@ -102,25 +112,96 @@ const AnimatedRoutes = () => {
             <Shop />
           </PageTransition>
         } />
+        <Route path="/product/:id" element={
+          <PageTransition>
+            <ProductDetail />
+          </PageTransition>
+        } />
+        
+        {/* Admin Dashboard route */}
+        <Route path="/admin/dashboard" element={
+          <PageTransition>
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          </PageTransition>
+        } />
+        
+        {/* Seller routes with seller layout */}
+        <Route path="/seller-dashboard" element={
+          <SellerLayout>
+            <PageTransition>
+              <SellerDashboard />
+            </PageTransition>
+          </SellerLayout>
+        } />
+        <Route path="/add-product" element={
+          <SellerLayout>
+            <PageTransition>
+              <AddProduct onAddProduct={handleAddProduct} />
+            </PageTransition>
+          </SellerLayout>
+        } />
+        <Route path="/seller-products" element={
+          <SellerLayout>
+            <PageTransition>
+              <SellerProducts products={products} />
+            </PageTransition>
+          </SellerLayout>
+        } />
+        <Route path="/seller-orders" element={
+          <SellerLayout>
+            <PageTransition>
+              <SellerOrders />
+            </PageTransition>
+          </SellerLayout>
+        } />
+        <Route path="/seller-profile" element={
+          <SellerLayout>
+            <PageTransition>
+              <SellerProfile />
+            </PageTransition>
+          </SellerLayout>
+        } />
       </Routes>
     </AnimatePresence>
   );
 };
 
 function App() {
+  // To detect if we're on a seller page for conditional navbar rendering
+  const MainAppContent = () => {
+    const location = useLocation();
+    const isSellerRoute = location.pathname.startsWith('/seller-') && 
+                          location.pathname !== '/seller-login' && 
+                          location.pathname !== '/seller-signup';
+    const isAdminRoute = location.pathname.startsWith('/admin');
+    
   return (
-    <AuthProvider>
-      <Router>
-        <div className="min-h-screen flex flex-col bg-gray-100">
-          <Navbar />
-          <main className="flex-grow pt-16">
+      <div className={`min-h-screen flex flex-col ${isSellerRoute || isAdminRoute ? 'bg-gray-50' : 'bg-gray-100'}`}>
+        {/* Only show main navbar on non-seller and non-admin routes */}
+        {!isSellerRoute && !isAdminRoute && <Navbar />}
+        
+        <main className={!isSellerRoute && !isAdminRoute ? "flex-grow pt-16" : "flex-grow"}>
             <AnimatedRoutes />
           </main>
           {/* <Footer /> */}
         </div>
-      </Router>
+    );
+  };
+
+  return (
+    <AuthProvider>
+      <CartProvider>
+        <SearchProvider>
+          <Router>
+            <MainAppContent />
+          </Router>
+        </SearchProvider>
+      </CartProvider>
     </AuthProvider>
   );
 }
 
 export default App;
+

@@ -2,6 +2,46 @@ const express = require('express');
 const router = express.Router();
 const Seller = require('../Models/Seller');
 const jwt = require('jsonwebtoken');
+const { registerSeller, loginSeller } = require('../controllers/AuthController');
+
+router.post('/register', registerSeller);
+router.post('/login', loginSeller);
+
+// Get seller by ID
+router.get('/:id', async (req, res) => {
+    try {
+        const seller = await Seller.findById(req.params.id);
+        
+        if (!seller) {
+            return res.status(404).json({ message: 'Seller not found' });
+        }
+        
+        res.json({ seller });
+    } catch (err) {
+        console.error('Error fetching seller:', err);
+        res.status(500).json({ message: 'Error retrieving seller', error: err.message });
+    }
+});
+
+// Update seller by ID
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedSeller = await Seller.findByIdAndUpdate(
+            req.params.id,
+            { $set: req.body },
+            { new: true, runValidators: true }
+        );
+        
+        if (!updatedSeller) {
+            return res.status(404).json({ message: 'Seller not found' });
+        }
+        
+        res.json({ seller: updatedSeller });
+    } catch (err) {
+        console.error('Error updating seller:', err);
+        res.status(500).json({ message: 'Error updating seller', error: err.message });
+    }
+});
 
 // Seller Signup Route
 router.post('/signup', async (req, res) => {

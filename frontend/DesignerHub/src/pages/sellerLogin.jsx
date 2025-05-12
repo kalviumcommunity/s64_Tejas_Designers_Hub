@@ -1,23 +1,47 @@
 import React, { useState } from "react";
 import "./SellerLogin.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function SellerLogin() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleGoogleLogin = () => {
     // TODO: Implement Google login logic
     navigate("/seller-dashboard");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement seller authentication logic here
-    // If login is successful:
-    navigate("/seller-dashboard");
+    setIsLoading(true);
+    try {
+      const response = await axios.post("http://localhost:8000/api/auth/seller/login", {
+        email,
+        password
+      });
+      if (response.data && response.data.token) {
+        // Save token to localStorage
+        localStorage.setItem('sellerToken', response.data.token);
+        
+        // Optionally save seller info
+        if (response.data.seller) {
+          localStorage.setItem('sellerInfo', JSON.stringify(response.data.seller));
+        }
+        
+        toast.success("Login successful!");
+        navigate("/seller-dashboard");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error(error.response?.data?.message || "Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -55,7 +79,7 @@ export default function SellerLogin() {
             <div className="seller-login-forgot-row">
               <span className="seller-login-forgot">forgot password ?</span>
             </div>
-            <button type="submit" className="seller-login-btn">Log in</button>
+            <button type="submit" className="seller-login-btn" disabled={isLoading}>{isLoading ? "Logging in..." : "Log in"}</button>
           </form>
           <div className="seller-login-divider">
             <span>Or Continue With</span>

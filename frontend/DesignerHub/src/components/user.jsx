@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { FaUser, FaEnvelope, FaVenusMars, FaPencilAlt } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaVenusMars, FaPencilAlt, FaListUl, FaUserCircle } from 'react-icons/fa';
+import Orders from './Orders';
 import './user.css';
 
 const User = () => {
@@ -8,6 +9,7 @@ const User = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [activeTab, setActiveTab] = useState('profile');
   const [profileData, setProfileData] = useState({
     firstName: '',
     lastName: '',
@@ -77,75 +79,96 @@ const User = () => {
   return (
     <div className="dh-user-container">
       <div className="dh-user-header">
-        <h2>User Profile</h2>
-        <button
-          className="dh-edit-button"
-          onClick={() => setIsEditing(!isEditing)}
+        <h2>My Account</h2>
+        {activeTab === 'profile' && (
+          <button
+            className="dh-edit-button"
+            onClick={() => setIsEditing(!isEditing)}
+          >
+            <FaPencilAlt /> {isEditing ? 'Cancel' : 'Edit Profile'}
+          </button>
+        )}
+      </div>
+
+      <div className="dh-tabs">
+        <button 
+          className={`dh-tab ${activeTab === 'profile' ? 'active' : ''}`}
+          onClick={() => setActiveTab('profile')}
         >
-          <FaPencilAlt /> {isEditing ? 'Cancel' : 'Edit Profile'}
+          <FaUserCircle /> Profile
+        </button>
+        <button 
+          className={`dh-tab ${activeTab === 'orders' ? 'active' : ''}`}
+          onClick={() => setActiveTab('orders')}
+        >
+          <FaListUl /> My Orders
         </button>
       </div>
 
       {error && <div className="dh-error-message">{error}</div>}
       {success && <div className="dh-success-message">{success}</div>}
 
-      <form onSubmit={handleSubmit} className="dh-user-form">
-        <div className="dh-form-group">
-          <FaUser className="dh-form-icon" />
-          <div className="dh-input-group">
+      {activeTab === 'profile' ? (
+        <form onSubmit={handleSubmit} className="dh-user-form">
+          <div className="dh-form-group">
+            <FaUser className="dh-form-icon" />
+            <div className="dh-input-group">
+              <input
+                type="text"
+                name="firstName"
+                value={profileData.firstName}
+                onChange={handleInputChange}
+                placeholder="First Name"
+                disabled={!isEditing}
+              />
+              <input
+                type="text"
+                name="lastName"
+                value={profileData.lastName}
+                onChange={handleInputChange}
+                placeholder="Last Name"
+                disabled={!isEditing}
+              />
+            </div>
+          </div>
+
+          <div className="dh-form-group">
+            <FaEnvelope className="dh-form-icon" />
             <input
-              type="text"
-              name="firstName"
-              value={profileData.firstName}
+              type="email"
+              name="email"
+              value={profileData.email}
               onChange={handleInputChange}
-              placeholder="First Name"
-              disabled={!isEditing}
-            />
-            <input
-              type="text"
-              name="lastName"
-              value={profileData.lastName}
-              onChange={handleInputChange}
-              placeholder="Last Name"
-              disabled={!isEditing}
+              placeholder="Email"
+              disabled={true} // Email should not be editable
             />
           </div>
-        </div>
 
-        <div className="dh-form-group">
-          <FaEnvelope className="dh-form-icon" />
-          <input
-            type="email"
-            name="email"
-            value={profileData.email}
-            onChange={handleInputChange}
-            placeholder="Email"
-            disabled={true} // Email should not be editable
-          />
-        </div>
+          <div className="dh-form-group">
+            <FaVenusMars className="dh-form-icon" />
+            <select
+              name="gender"
+              value={profileData.gender}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+              className="dh-select-input"
+            >
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
 
-        <div className="dh-form-group">
-          <FaVenusMars className="dh-form-icon" />
-          <select
-            name="gender"
-            value={profileData.gender}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-            className="dh-select-input"
-          >
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-
-        {isEditing && (
-          <button type="submit" className="dh-save-button">
-            Save Changes
-          </button>
-        )}
-      </form>
+          {isEditing && (
+            <button type="submit" className="dh-save-button">
+              Save Changes
+            </button>
+          )}
+        </form>
+      ) : (
+        <Orders />
+      )}
     </div>
   );
 };

@@ -34,10 +34,18 @@ export default function Login() {
       if (response.ok) {
         // Store the token
         localStorage.setItem('token', data.token);
+        
+        // Also store user data in localStorage as a backup
+        if (data.user) {
+          localStorage.setItem('userInfo', JSON.stringify(data.user));
+          console.log("User info stored in localStorage:", data.user);
+        }
+        
         // Update auth context
         if (login) {
           login(data.user);
         }
+        
         // Navigate to home page
         navigate("/");
       } else {

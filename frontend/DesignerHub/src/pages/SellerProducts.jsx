@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const SellerProducts = () => {
   const [products, setProducts] = useState([]);
@@ -12,8 +14,30 @@ const SellerProducts = () => {
     category: '',
     sizes: [],
     images: [],
+    imageFiles: [],
     stock: '',
   });
+  const [loading, setLoading] = useState(false);
+  const [editProductId, setEditProductId] = useState(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const token = localStorage.getItem('sellerToken');
+        const res = await axios.get("http://localhost:8000/api/products", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setProducts(res.data);
+      } catch (error) {
+        console.error("Failed to fetch seller products:", error);
+        toast.error("Failed to load products. Please try again.");
+      }
+    };
+  
+    fetchProducts();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,50 +58,144 @@ const SellerProducts = () => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
+    const previews = files.map((file) => URL.createObjectURL(file));
     setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ...imageUrls],
+      images: [...prev.images, ...previews],
+      imageFiles: [...prev.imageFiles, ...files],
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add validation here
-    setProducts((prev) => [...prev, { ...formData, id: Date.now() }]);
+    setLoading(true);
+  
+    try {
+      // First, validate the required fields
+      if (!formData.name || !formData.description || !formData.price || !formData.category) {
+        toast.error('Please fill in all required fields (name, description, price, category)');
+        setLoading(false);
+        return;
+      }
+
+      if (formData.sizes.length === 0) {
+        toast.error('Please select at least one size');
+        setLoading(false);
+        return;
+      }
+
+      if (formData.imageFiles.length === 0) {
+        toast.error('Please add at least one product image');
+        setLoading(false);
+        return;
+      }
+
+      const data = new FormData();
+      data.append('name', formData.name);
+      data.append('description', formData.description);
+      data.append('price', formData.price);
+      data.append('category', formData.category);
+      data.append('stock', formData.stock || 1);
+      
+      // Handle sizes properly
+      formData.sizes.forEach((size) => data.append('sizes[]', size));
+      
+      // Handle image files upload
+      formData.imageFiles.forEach((file) => data.append('images', file));
+  
+      // Get authentication token from localStorage
+      const token = localStorage.getItem('sellerToken');
+      console.log('Using authentication token:', token ? 'Yes (token exists)' : 'No token');
+      
+      // Because we are using FormData with files, we need to use the direct upload endpoint
+      const response = await axios.post("http://localhost:8000/api/products", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`
+        },
+      });
+  
+      console.log('Product created successfully:', response.data);
+      setProducts((prev) => [...prev, response.data]);
+      setFormData({
+        name: '',
+        description: '',
+        price: '',
+        category: '',
+        sizes: [],
+        images: [],
+        imageFiles: [],
+        stock: '',
+      });
+      setShowForm(false);
+      toast.success("Product added successfully!");
+    } catch (error) {
+      console.error('Error uploading product:', error);
+      const errorMessage = error.response?.data?.message || "Failed to add product. Please make sure you're logged in.";
+      console.log('Error details:', errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteProduct = async (productId) => {
+    if (!window.confirm('Are you sure you want to delete this product?')) return;
+    try {
+      const token = localStorage.getItem('sellerToken');
+      await axios.delete(`http://localhost:8000/api/products/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setProducts((prev) => prev.filter((p) => p._id !== productId));
+      toast.success('Product deleted successfully!');
+    } catch (error) {
+      toast.error('Failed to delete product.');
+    }
+  };
+
+  const handleEditProduct = (product) => {
     setFormData({
-      name: '',
-      description: '',
-      price: '',
-      category: '',
-      sizes: [],
-      images: [],
-      stock: '',
+      name: product.name || '',
+      description: product.description || '',
+      price: product.price || '',
+      category: product.category || '',
+      sizes: product.sizes || [],
+      images: product.images && product.images.map(img => typeof img === 'string' ? img : img.url),
+      imageFiles: [],
+      stock: product.stock || '',
     });
-    setShowForm(false);
+    setEditProductId(product._id);
+    setShowForm(true);
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold">My Products</h1>
+        <h1 className="text-3xl font-bold">Your Products</h1>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg flex items-center gap-2"
             onClick={() => setShowForm(true)}
+          className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg"
           >
-            <FiPlus /> Add New Product
+          <FiPlus />
+          Add Product
           </motion.button>
         </div>
 
+      {/* Form modal */}
         {showForm && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-800 p-6 rounded-xl mb-8"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+        >
+          <motion.div
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            className="bg-gray-800 text-white rounded-xl p-8 max-w-3xl w-full max-h-[90vh] overflow-y-auto"
           >
+            <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-2 gap-6">
                 <div>
@@ -125,15 +243,28 @@ const SellerProducts = () => {
                   required
                 >
                   <option value="">Select Category</option>
-                  <option value="men">Men</option>
-                  <option value="women">Women</option>
-                  <option value="accessories">Accessories</option>
+                  <option value="Men">Men</option>
+                  <option value="Women">Women</option>
+                  <option value="Kids">Kids</option>
+                  <option value="Accessories">Accessories</option>
                 </select>
               </div>
 
               <div>
+                <label className="block mb-2">Stock</label>
+                <input
+                  type="number"
+                  name="stock"
+                  value={formData.stock}
+                  onChange={handleInputChange}
+                  className="w-full bg-gray-700 rounded-lg px-4 py-2"
+                  required
+                />
+              </div>
+
+              <div>
                 <label className="block mb-2">Sizes</label>
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap">
                   {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => (
                     <button
                       key={size}
@@ -175,13 +306,14 @@ const SellerProducts = () => {
               <div className="flex gap-4">
                 <button
                   type="submit"
+                  disabled={loading}
                   className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg"
                 >
-                  Add Product
+                  {loading ? (editProductId ? 'Updating...' : 'Adding Product...') : (editProductId ? 'Update Product' : 'Add Product')}
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowForm(false)}
+                  onClick={() => { setShowForm(false); setEditProductId(null); }}
                   className="bg-gray-700 hover:bg-gray-600 px-6 py-3 rounded-lg"
                 >
                   Cancel
@@ -189,53 +321,53 @@ const SellerProducts = () => {
               </div>
             </form>
           </motion.div>
+          </motion.div>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product) => (
+        {products.length === 0 ? (
+          <div className="col-span-full text-center py-10 text-gray-400">
+            No products found. Add your first product!
+          </div>
+        ) : (
+          products.map((product) => (
             <motion.div
-              key={product.id}
+              key={product._id}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="bg-gray-800 rounded-xl overflow-hidden"
             >
-              <div className="relative h-64">
-                {product.images[0] && (
-                  <img
-                    src={product.images[0]}
+              <div className="h-48 bg-gray-700 overflow-hidden">
+                <img
+                  src={
+                    product.images && product.images.length > 0
+                      ? typeof product.images[0] === 'string'
+                        ? product.images[0]
+                        : product.images[0].url || 'https://via.placeholder.com/300'
+                      : 'https://via.placeholder.com/300'
+                  }
                     alt={product.name}
                     className="w-full h-full object-cover"
                   />
-                )}
-                <div className="absolute top-4 right-4 flex gap-2">
-                  <button className="p-2 bg-gray-900 rounded-full hover:bg-gray-800">
-                    <FiEdit2 />
-                  </button>
-                  <button className="p-2 bg-red-600 rounded-full hover:bg-red-700">
-                    <FiTrash2 />
-                  </button>
-                </div>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-                <p className="text-gray-400 mb-4">{product.description}</p>
+                <p className="text-gray-400 mb-4 line-clamp-2">{product.description}</p>
                 <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold">${product.price}</span>
+                  <span className="text-green-400 font-bold">${product.price}</span>
                   <div className="flex gap-2">
-                    {product.sizes.map((size) => (
-                      <span
-                        key={size}
-                        className="px-2 py-1 bg-gray-700 rounded-lg text-sm"
-                      >
-                        {size}
-                      </span>
-                    ))}
+                    <button className="bg-blue-600 p-2 rounded-lg" onClick={() => handleEditProduct(product)}>
+                      <FiEdit2 />
+                    </button>
+                    <button className="bg-red-600 p-2 rounded-lg" onClick={() => handleDeleteProduct(product._id)}>
+                      <FiTrash2 />
+                    </button>
                   </div>
                 </div>
               </div>
             </motion.div>
-          ))}
-        </div>
+          ))
+        )}
       </div>
     </div>
   );

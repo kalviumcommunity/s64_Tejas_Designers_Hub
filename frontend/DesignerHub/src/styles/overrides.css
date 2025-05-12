@@ -1,0 +1,51 @@
+/* Global overrides for browser defaults */
+*:focus,
+*:active,
+button:focus,
+button:active,
+select:focus,
+select:active,
+input:focus,
+input:active {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Remove any potential border or highlight styling */
+button, 
+select, 
+input,
+a {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  border-bottom: none !important;
+}
+
+/* Chrome-specific overrides */
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+/* Firefox-specific overrides */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Product detail page specific overrides */
+.product-sizes,
+.product-quantity,
+.sizes-container,
+.quantity-selector,
+.section-title,
+.size-btn,
+.quantity-btn {
+  outline: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  background-image: none !important;
+} 

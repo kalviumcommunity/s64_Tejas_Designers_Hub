@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./SellerSignup.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function SellerSignup() {
   const navigate = useNavigate();
@@ -14,15 +16,47 @@ export default function SellerSignup() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    // TODO: Implement seller signup logic
-    navigate("/seller-dashboard");
+    
+    // Validate form
+    if (form.password !== form.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
+
+    if (form.password.length < 6) {
+      toast.error("Password must be at least 6 characters long!");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await axios.post('http://localhost:8000/api/auth/seller/signup', {
+        shopName: form.shopName,
+        ownerName: form.ownerName,
+        email: form.email,
+        phone: form.phone,
+        password: form.password,
+        confirmPassword: form.confirmPassword
+      });
+
+      if (response.data) {
+        toast.success("Registration successful! Please login.");
+        navigate("/seller-login");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error(error.response?.data?.message || "Registration failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -36,13 +70,43 @@ export default function SellerSignup() {
           <div className="seller-signup-title">Seller Registration</div>
           <form className="seller-signup-form" onSubmit={handleSubmit}>
             <label className="seller-signup-label">Shop Name</label>
-            <input name="shopName" className="seller-signup-input" placeholder="Shop Name" value={form.shopName} onChange={handleChange} required />
+            <input 
+              name="shopName" 
+              className="seller-signup-input" 
+              placeholder="Shop Name" 
+              value={form.shopName} 
+              onChange={handleChange} 
+              required 
+            />
             <label className="seller-signup-label">Owner Name</label>
-            <input name="ownerName" className="seller-signup-input" placeholder="Owner Name" value={form.ownerName} onChange={handleChange} required />
+            <input 
+              name="ownerName" 
+              className="seller-signup-input" 
+              placeholder="Owner Name" 
+              value={form.ownerName} 
+              onChange={handleChange} 
+              required 
+            />
             <label className="seller-signup-label">Email</label>
-            <input name="email" type="email" className="seller-signup-input" placeholder="Email Address" value={form.email} onChange={handleChange} required />
+            <input 
+              name="email" 
+              type="email" 
+              className="seller-signup-input" 
+              placeholder="Email Address" 
+              value={form.email} 
+              onChange={handleChange} 
+              required 
+            />
             <label className="seller-signup-label">Phone</label>
-            <input name="phone" type="tel" className="seller-signup-input" placeholder="Phone Number" value={form.phone} onChange={handleChange} required />
+            <input 
+              name="phone" 
+              type="tel" 
+              className="seller-signup-input" 
+              placeholder="Phone Number" 
+              value={form.phone} 
+              onChange={handleChange} 
+              required 
+            />
             <label className="seller-signup-label">Password</label>
             <div className="seller-signup-password-row">
               <input
@@ -85,7 +149,13 @@ export default function SellerSignup() {
                 {showConfirm ? "🙈" : "🔒"}
               </button>
             </div>
-            <button type="submit" className="seller-signup-btn">Register</button>
+            <button 
+              type="submit" 
+              className="seller-signup-btn"
+              disabled={isLoading}
+            >
+              {isLoading ? "Registering..." : "Register"}
+            </button>
           </form>
           <div className="seller-signup-login-row">
             <span>Already have an account?</span>

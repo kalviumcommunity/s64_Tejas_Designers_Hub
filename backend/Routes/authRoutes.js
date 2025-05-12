@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/User');
+const Seller = require('../Models/Seller');
 
 // Middleware to verify JWT token
 const verifyToken = async (req, res, next) => {
@@ -174,5 +175,104 @@ router.post('/register', async (req, res) => {
         });
     }
 });
+
+// seller routes
+
+
+router.post('/seller/signup', async (req, res) => {
+    const { shopName, ownerName, email, phone, password, confirmPassword } = req.body;
+  
+    try {
+      // Validate input
+      if (!shopName || !ownerName || !email || !phone || !password || !confirmPassword) {
+        return res.status(400).json({ message: "All fields are required" });
+      }
+  
+      if (password !== confirmPassword) {
+        return res.status(400).json({ message: "Passwords do not match" });
+      }
+  
+      // Check if seller already exists
+      const existingSeller = await Seller.findOne({ email });
+      if (existingSeller) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
+  
+      // Create new seller
+      const newSeller = new Seller({
+        shopName,
+        ownerName,
+        email,
+        phone,
+        password // Password will be hashed by the pre-save middleware
+      });
+  
+      // Save seller to database
+      await newSeller.save();
+  
+      // Generate JWT token
+      const token = jwt.sign(
+        { id: newSeller._id, email: newSeller.email },
+        process.env.JWT_SECRET || 'your_jwt_secret',
+        { expiresIn: '24h' }
+      );
+  
+      // Send success response
+      res.status(201).json({
+        message: "Seller registered successfully",
+        token,
+        seller: {
+          id: newSeller._id,
+          shopName: newSeller.shopName,
+          ownerName: newSeller.ownerName,
+          email: newSeller.email
+        }
+      });
+    } catch (error) {
+      console.error("Registration error:", error);
+      res.status(500).json({ message: "Error registering seller", error: error.message });
+    }
+  });
+  
+  // Seller login route
+  router.post('/seller/login', async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      // Find seller by email
+      const seller = await Seller.findOne({ email });
+      if (!seller) {
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
+  
+      // Compare password
+      const isMatch = await bcrypt.compare(password, seller.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
+  
+      // Generate JWT token
+      const token = jwt.sign(
+        { id: seller._id, email: seller.email },
+        process.env.JWT_SECRET || 'your_jwt_secret',
+        { expiresIn: '24h' }
+      );
+  
+      // Send success response
+      res.status(200).json({
+        message: "Login successful",
+        token,
+        seller: {
+          id: seller._id,
+          shopName: seller.shopName,
+          ownerName: seller.ownerName,
+          email: seller.email
+        }
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ message: "Error logging in", error: error.message });
+    }
+  });
 
 module.exports = router; 

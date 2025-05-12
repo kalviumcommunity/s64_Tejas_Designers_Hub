@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Seller = require('../Models/seller');
+const Seller = require('../Models/Seller');
+const { registerSeller, loginSeller } = require('../controllers/AuthController');
+
+router.post('/register', registerSeller);
+router.post('/login', loginSeller);
 
 // @desc    Get all sellers
 // @route   GET /api/sellers
@@ -53,6 +57,12 @@ router.put('/:id', async (req, res) => {
     } catch (err) {
       res.status(500).json({ message: 'Error updating seller', error: err.message });
     }
+  });
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: false, // true in production with HTTPS
+    sameSite: "Lax",
   });
 
 module.exports = router;
