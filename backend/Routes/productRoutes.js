@@ -353,4 +353,67 @@ router.get('/seller/:sellerId', async (req, res) => {
   }
 });
 
+router.patch('/:id', authenticateSeller, uploadMulter.array('images'), async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    // Ensure only the owner can update
+    if (product.seller.toString() !== req.seller.id) {
+      return res.status(403).json({ message: 'Not authorized to update this product' });
+    }
+
+    const { name, description, price, category, sizes, stock, replaceImages } = req.body;
+
+    let parsedSizes = [];
+    if (typeof sizes === 'string') {
+      try {
+        if (sizes.startsWith('[')) {
+          parsedSizes = JSON.parse(sizes);
+        } else if (sizes.includes(',')) {
+          parsedSizes = sizes.split(',').map(s => s.trim());
+        } else {
+          parsedSizes = [sizes];
+        }
+      } catch (e) {
+        parsedSizes = [sizes];
+      }
+    } else if (Array.isArray(sizes)) {
+      parsedSizes = sizes;
+    }
+
+    // Prepare new images if any were uploaded
+    let formattedImages = product.images || [];
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map((file) => ({
+        url: `${req.protocol}://${req.get('host')}/uploads/${file.filename}`,
+        publicId: file.filename
+      }));
+
+      if (replaceImages === 'true') {
+        // Optional: Delete old images from disk or Cloudinary if needed
+        formattedImages = newImages;
+      } else {
+        formattedImages = [...formattedImages, ...newImages];
+      }
+    }
+
+    // Update the product fields
+    product.name = name || product.name;
+    product.description = description || product.description;
+    product.price = price ? parseFloat(price) : product.price;
+    product.category = category || product.category;
+    product.stock = stock ? parseInt(stock) : product.stock;
+    product.sizes = parsedSizes.length > 0 ? parsedSizes : product.sizes;
+    product.images = formattedImages;
+
+    const updatedProduct = await product.save();
+    res.status(200).json(updatedProduct);
+
+  } catch (err) {
+    console.error('Error updating product:', err);
+    res.status(400).json({ message: err.message });
+  }
+});
+
 module.exports = router;

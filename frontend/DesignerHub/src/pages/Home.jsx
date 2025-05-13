@@ -155,14 +155,10 @@ const Home = () => {
         className="relative h-screen flex items-center justify-center overflow-hidden"
       >
         <div className="absolute inset-0 z-0">
-          <motion.img
-            src="/src/assets/banner-model.jpg"
-            alt="Hero"
-            className="w-full h-full object-cover"
-            initial={{ scale: 1.2 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 2 }}
-          />
+          <video autoPlay muted loop playsInline className="hero-video">
+            <source src="/src/assets/hero-video.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
           <motion.div 
             className="absolute inset-0 bg-black/30 backdrop-blur-sm"
             initial={{ opacity: 0 }}

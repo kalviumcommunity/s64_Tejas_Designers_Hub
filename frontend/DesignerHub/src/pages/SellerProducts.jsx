@@ -84,7 +84,7 @@ const SellerProducts = () => {
         return;
       }
 
-      if (formData.imageFiles.length === 0) {
+      if (!editProductId && formData.imageFiles.length === 0) {
         toast.error('Please add at least one product image');
         setLoading(false);
         return;
@@ -100,23 +100,39 @@ const SellerProducts = () => {
       // Handle sizes properly
       formData.sizes.forEach((size) => data.append('sizes[]', size));
       
-      // Handle image files upload
-      formData.imageFiles.forEach((file) => data.append('images', file));
+      // Handle image files upload only if there are new images
+      if (formData.imageFiles.length > 0) {
+        formData.imageFiles.forEach((file) => data.append('images', file));
+      }
   
       // Get authentication token from localStorage
       const token = localStorage.getItem('sellerToken');
       console.log('Using authentication token:', token ? 'Yes (token exists)' : 'No token');
       
-      // Because we are using FormData with files, we need to use the direct upload endpoint
-      const response = await axios.post("http://localhost:8000/api/products", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "Authorization": `Bearer ${token}`
-        },
-      });
+      let response;
+      if (editProductId) {
+        // Update existing product
+        response = await axios.patch(`http://localhost:8000/api/products/${editProductId}`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`
+          },
+        });
+        setProducts((prev) => prev.map((p) => p._id === editProductId ? response.data : p));
+        toast.success("Product updated successfully!");
+      } else {
+        // Create new product
+        response = await axios.post("http://localhost:8000/api/products", data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`
+          },
+        });
+        setProducts((prev) => [...prev, response.data]);
+        toast.success("Product added successfully!");
+      }
   
-      console.log('Product created successfully:', response.data);
-      setProducts((prev) => [...prev, response.data]);
+      console.log('Product operation successful:', response.data);
       setFormData({
         name: '',
         description: '',
@@ -128,10 +144,10 @@ const SellerProducts = () => {
         stock: '',
       });
       setShowForm(false);
-      toast.success("Product added successfully!");
+      setEditProductId(null);
     } catch (error) {
-      console.error('Error uploading product:', error);
-      const errorMessage = error.response?.data?.message || "Failed to add product. Please make sure you're logged in.";
+      console.error('Error with product operation:', error);
+      const errorMessage = error.response?.data?.message || "Failed to perform operation. Please make sure you're logged in.";
       console.log('Error details:', errorMessage);
       toast.error(errorMessage);
     } finally {
