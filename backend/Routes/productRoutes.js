@@ -233,48 +233,48 @@ router.post('/upload', authenticateSeller, upload.array('images', 5), async (req
 });
 
 // Update a product
-router.patch('/:id', authenticateSeller, async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Product not found' });
+// router.patch('/:id', authenticateSeller, async (req, res) => {
+//   try {
+//     const product = await Product.findById(req.params.id);
+//     if (!product) return res.status(404).json({ message: 'Product not found' });
     
-    // Check if the seller owns this product
-    if (product.seller.toString() !== req.seller.id) {
-      return res.status(403).json({ message: 'Not authorized to update this product' });
-    }
+//     // Check if the seller owns this product
+//     if (product.seller.toString() !== req.seller.id) {
+//       return res.status(403).json({ message: 'Not authorized to update this product' });
+//     }
     
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updatedProduct);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
+//     const updatedProduct = await Product.findByIdAndUpdate(
+//       req.params.id,
+//       req.body,
+//       { new: true }
+//     );
+//     res.json(updatedProduct);
+//   } catch (err) {
+//     res.status(400).json({ message: err.message });
+//   }
+// });
 
-// Delete a product
-router.delete('/:id', authenticateSeller, async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Product not found' });
+// // Delete a product
+// router.delete('/:id', authenticateSeller, async (req, res) => {
+//   try {
+//     const product = await Product.findById(req.params.id);
+//     if (!product) return res.status(404).json({ message: 'Product not found' });
     
-    // Check if the seller owns this product
-    if (product.seller.toString() !== req.seller.id) {
-      return res.status(403).json({ message: 'Not authorized to delete this product' });
-    }
+//     // Check if the seller owns this product
+//     if (product.seller.toString() !== req.seller.id) {
+//       return res.status(403).json({ message: 'Not authorized to delete this product' });
+//     }
     
-    try {
-      await Product.findByIdAndDelete(req.params.id);
-      res.json({ message: 'Product deleted successfully' });
-    } catch (error) {
-      res.status(500).json({ message: 'Error deleting product' });
-    }
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+//     try {
+//       await Product.findByIdAndDelete(req.params.id);
+//       res.json({ message: 'Product deleted successfully' });
+//     } catch (error) {
+//       res.status(500).json({ message: 'Error deleting product' });
+//     }
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// });
 
 // Check if uploaded files exist
 router.get('/check-uploads', (req, res) => {
