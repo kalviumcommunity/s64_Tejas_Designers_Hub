@@ -6,21 +6,6 @@ const { registerSeller, loginSeller } = require('../controllers/AuthController')
 router.post('/register', registerSeller);
 router.post('/login', loginSeller);
 
-// @desc    Get all sellers
-// @route   GET /api/sellers
-router.get('/:id', async (req, res) => {
-  try {
-    const sellers = await Seller.find();
-    res.json(sellers);
-  } catch (err) {
-    res.status(500).json({ message: 'Error retrieving sellers', error: err.message });
-  }
-});
-
-// @desc    Create a new seller
-// @route   POST /api/sellers
-// Make sure this path is correct
-
 // POST /api/sellers
 router.post('/', async (req, res) => {
   try {
@@ -30,12 +15,32 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ message: 'All fields are required.' });
     }
 
-    const newSeller = new Seller({ name, brandName, email, password }); // ✅ Defined properly
-
+    const newSeller = new Seller({ name, brandName, email, password });
     await newSeller.save();
     res.status(201).json(newSeller);
   } catch (error) {
     res.status(500).json({ message: 'Error creating seller', error: error.message });
+  }
+});
+
+// @desc    Get all sellers
+// @route   GET /api/sellers
+router.get('/', async (req, res) => {
+  try {
+    const sellers = await Seller.find();
+    res.json(sellers);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving sellers', error: err.message });
+  }
+});
+
+// Parameterized routes last
+router.get('/:id', async (req, res) => {
+  try {
+    const sellers = await Seller.find();
+    res.json(sellers);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving sellers', error: err.message });
   }
 });
 

@@ -254,7 +254,7 @@ router.patch('/:id', authenticateSeller, async (req, res) => {
   }
 });
 
-// // Delete a product
+// Delete a product
 router.delete('/:id', authenticateSeller, async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -415,5 +415,76 @@ router.patch('/:id', authenticateSeller, uploadMulter.array('images'), async (re
     res.status(400).json({ message: err.message });
   }
 });
+
+/**
+ * @route   PUT /:id
+ * @desc    Fully update a product (replace fields)
+ */
+router.put('/:id', authenticateSeller, uploadMulter.array('images'), async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    // Check if the seller owns the product
+    if (product.seller.toString() !== req.seller.id) {
+      return res.status(403).json({ message: 'Not authorized to update this product' });
+    }
+
+    const { name, description, price, category, sizes, stock } = req.body;
+
+    if (!name || !description || !price || !category) {
+      return res.status(400).json({
+        message: 'Missing required fields: name, description, price, and category are required'
+      });
+    }
+
+    const parsedPrice = parseFloat(price);
+    if (isNaN(parsedPrice)) {
+      return res.status(400).json({ message: 'Price must be a valid number' });
+    }
+
+    let parsedSizes = [];
+    if (typeof sizes === 'string') {
+      try {
+        if (sizes.startsWith('[')) {
+          parsedSizes = JSON.parse(sizes);
+        } else if (sizes.includes(',')) {
+          parsedSizes = sizes.split(',').map(s => s.trim());
+        } else {
+          parsedSizes = [sizes];
+        }
+      } catch (e) {
+        parsedSizes = [sizes];
+      }
+    } else if (Array.isArray(sizes)) {
+      parsedSizes = sizes;
+    }
+
+    // Format new image URLs if any files uploaded
+    let formattedImages = product.images; // default to existing images
+    if (req.files && req.files.length > 0) {
+      formattedImages = req.files.map((file) => ({
+        url: `${req.protocol}://${req.get('host')}/uploads/${file.filename}`,
+        publicId: file.filename
+      }));
+    }
+
+    // Fully replace product data
+    product.name = name;
+    product.description = description;
+    product.price = parsedPrice;
+    product.category = category;
+    product.sizes = parsedSizes;
+    product.stock = parseInt(stock) || 1;
+    product.images = formattedImages;
+
+    const updatedProduct = await product.save();
+    res.status(200).json(updatedProduct);
+  } catch (err) {
+    console.error('PUT update failed:', err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
+  }
+});
+
 
 module.exports = router;

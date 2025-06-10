@@ -304,4 +304,9 @@ router.put('/:id', async (req, res) => {
     }
   });
 
+// Parameterized route last
+router.get('/:id', async (req, res) => {
+  // ... existing code ...
+});
+
 module.exports = router;
