@@ -16,7 +16,7 @@ import SellerProducts from "./pages/SellerProducts";
 import SellerOrders from "./pages/SellerOrders";
 import SellerProfile from "./pages/SellerProfile";
 import User from "./components/user";
-import DressesCollection from "./pages/DressesCollection";
+// import DressesCollection from "./pages/DressesCollection";
 import Shop from "./pages/Shop";
 import JacketsCollection from "./pages/JacketsCollection";
 import PageTransition from "./components/PageTransition";
