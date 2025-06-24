@@ -99,11 +99,7 @@ const AnimatedRoutes = () => {
             <User />
           </PageTransition>
         } />
-        <Route path="/collections/dresses" element={
-          <PageTransition>
-            <DressesCollection />
-          </PageTransition>
-        } />
+        
         <Route path="/collections/jackets" element={
           <PageTransition>
             <JacketsCollection />
