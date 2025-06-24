@@ -1,6 +1,6 @@
 // models/Seller.js
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const sellerSchema = new mongoose.Schema({
   shopName: { 
