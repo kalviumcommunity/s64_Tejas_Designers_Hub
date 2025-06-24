@@ -62,8 +62,6 @@ const NavBar = () => {
 
   const navLinks = [
     { to: '/shop', label: 'Shop' },
-    { to: '/collections/dresses', label: 'Dresses' },
-    { to: '/collections/jackets', label: 'Jackets' },
     { to: '/seller-dashboard', label: 'Sell' },
   ];
 
@@ -76,9 +74,9 @@ const NavBar = () => {
     <motion.nav 
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="fixed top-0 left-0 right-0 w-full bg-white/30 backdrop-blur-lg z-50 border-b border-white/20"
+      className="fixed top-0 left-0 right-0 w-full bg-gray-900/80 backdrop-blur-lg z-50 border-b border-white/20"
       style={{
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.05)',
+        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
         backdropFilter: 'blur(10px)',
       }}
     >
@@ -89,7 +87,7 @@ const NavBar = () => {
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 text-gray-700 hover:text-purple-600 transition-colors duration-300"
+              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-800 text-gray-300 hover:text-purple-400 transition-colors duration-300"
               aria-label="Toggle menu"
             >
               <motion.div
@@ -116,7 +114,7 @@ const NavBar = () => {
                 <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 bg-clip-text text-transparent">
                   Designer
                 </span>
-                <span className="text-gray-800 font-light ml-1">Hub</span>
+                <span className="text-gray-200 font-light ml-1">Hub</span>
                 <motion.span 
                   className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600"
                   initial={{ scaleX: 0, opacity: 0 }}
@@ -141,9 +139,9 @@ const NavBar = () => {
                   className={({ isActive }) =>
                     `px-3 py-2 text-sm font-medium transition-all duration-300 relative group overflow-hidden flex items-center ${
                       isActive 
-                        ? 'text-purple-600' 
-                        : 'text-gray-700 hover:text-gray-900'
-                    } ${link.to === '/admin/dashboard' ? 'bg-purple-100 rounded-full px-4' : ''}`
+                        ? 'text-purple-400' 
+                        : 'text-gray-300 hover:text-white'
+                    } ${link.to === '/admin/dashboard' ? 'bg-purple-900/50 rounded-full px-4' : ''}`
                   }
                 >
                   {({ isActive }) => (
@@ -156,7 +154,7 @@ const NavBar = () => {
                           layoutId="navIndicator"
                         />
                       ) : (
-                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-300 group-hover:w-full transition-all duration-300" />
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-700 group-hover:w-full transition-all duration-300" />
                       )}
                     </>
                   )}
@@ -183,7 +181,7 @@ const NavBar = () => {
                 value={searchInput}
                 onChange={handleSearchInputChange}
                 placeholder="Search products..."
-                className={`w-full pl-10 pr-4 py-2.5 rounded-full bg-white/80 border border-gray-200/50 focus:bg-white focus:border-purple-300 focus:outline-none transition-all duration-300 ${
+                className={`w-full pl-10 pr-4 py-2.5 rounded-full bg-gray-800/80 border border-gray-700/50 focus:bg-gray-900 focus:border-purple-500 focus:outline-none transition-all duration-300 text-white placeholder-gray-400 ${
                   isSearchOpen ? 'opacity-100' : 'opacity-0'
                 }`}
                 style={{ 
@@ -205,7 +203,7 @@ const NavBar = () => {
                 type="submit"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className={`absolute ${isSearchOpen ? 'left-3' : 'right-2'} top-1/2 -translate-y-1/2 text-gray-500 hover:text-purple-500 z-10 transition-colors duration-300`}
+                className={`absolute ${isSearchOpen ? 'left-3' : 'right-2'} top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-400 z-10 transition-colors duration-300`}
                 onClick={handleSearchFocus}
               >
                 <FaSearch />
@@ -220,7 +218,7 @@ const NavBar = () => {
               whileTap={{ scale: 0.9 }}
               className="relative"
             >
-              <NavLink to="/cart" className="text-gray-700 hover:text-purple-600 relative transition-colors duration-300">
+              <NavLink to="/cart" className="text-gray-300 hover:text-purple-400 relative transition-colors duration-300">
                 <motion.span
                   initial={{ scale: 0.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -246,7 +244,7 @@ const NavBar = () => {
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setShowDropdown(!showDropdown)}
-                  className="flex items-center space-x-2 text-gray-700 hover:text-purple-600 focus:outline-none transition-colors duration-300"
+                  className="flex items-center space-x-2 text-gray-300 hover:text-purple-400 focus:outline-none transition-colors duration-300"
                 >
                   <FaUserCircle size={22} />
                   <span className="text-sm font-medium hidden lg:inline-block">
@@ -261,17 +259,17 @@ const NavBar = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ duration: 0.2, ease: "easeOut" }}
-                      className="absolute right-0 mt-2 w-56 rounded-xl shadow-lg bg-white/80 backdrop-blur-lg border border-gray-100 overflow-hidden"
+                      className="absolute right-0 mt-2 w-56 rounded-xl shadow-lg bg-gray-900/95 backdrop-blur-lg border border-gray-700 overflow-hidden"
                       style={{ boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
                     >
                       <div className="py-2">
-                        <div className="px-4 py-3 border-b border-gray-100">
-                          <p className="text-sm font-medium text-gray-700">Signed in as</p>
-                          <p className="text-sm font-bold text-gray-900 truncate">{user.email || "User"}</p>
+                        <div className="px-4 py-3 border-b border-gray-700">
+                          <p className="text-sm font-medium text-gray-300">Signed in as</p>
+                          <p className="text-sm font-bold text-gray-300 truncate">{user.email || "User"}</p>
                         </div>
                         <NavLink
                           to="/profile"
-                          className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150"
+                          className="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 transition-colors duration-150"
                           onClick={() => setShowDropdown(false)}
                         >
                           <span className="mr-2">👤</span> Your Profile
@@ -279,7 +277,7 @@ const NavBar = () => {
                         {user.isAdmin && (
                           <NavLink
                             to="/admin/dashboard"
-                            className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150"
+                            className="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 transition-colors duration-150"
                             onClick={() => setShowDropdown(false)}
                           >
                             <span className="mr-2">⚙️</span> Admin Dashboard
@@ -287,7 +285,7 @@ const NavBar = () => {
                         )}
                         <button
                           onClick={handleLogout}
-                          className="flex items-center w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors duration-150"
+                          className="flex items-center w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-900/50 transition-colors duration-150"
                         >
                           <span className="mr-2">👋</span> Sign Out
                         </button>
@@ -297,28 +295,14 @@ const NavBar = () => {
                 </AnimatePresence>
               </div>
             ) : (
-              <div className="hidden md:flex items-center space-x-4">
-                <motion.div 
-                  whileHover={{ y: -2 }}
-                  whileTap={{ y: 0 }}
+              <div className="hidden md:flex items-center space-x-6">
+                <motion.div
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="relative"
                 >
-                  <NavLink
-                    to="/login"
-                    className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors duration-300 relative group"
-                  >
-                    Sign In
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-600 group-hover:w-full transition-all duration-300" />
-                  </NavLink>
-                </motion.div>
-                <motion.div 
-                  whileHover={{ scale: 1.05, boxShadow: "0 4px 12px rgba(139, 92, 246, 0.25)" }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <NavLink
-                    to="/signup"
-                    className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:from-purple-700 hover:to-pink-600 transition-all duration-300 shadow-sm"
-                  >
-                    Register
+                  <NavLink to="/login" className="text-gray-300 hover:text-purple-400 relative transition-colors duration-300">
+                    <FaUserCircle size={24} />
                   </NavLink>
                 </motion.div>
               </div>
@@ -342,11 +326,11 @@ const NavBar = () => {
                 value={searchInput}
                 onChange={handleSearchInputChange}
                 placeholder="Search products..."
-                className="w-full px-4 py-2 rounded-full bg-gray-100 focus:bg-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                className="w-full px-4 py-2 rounded-full bg-gray-800 focus:bg-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none"
               />
               <button
                 type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
                 <FaSearch />
               </button>
@@ -362,43 +346,36 @@ const NavBar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white"
+            className="md:hidden bg-gray-900/95 backdrop-blur-sm border-t border-white/10"
           >
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
               {navLinks.map((link) => (
                 <NavLink
                   key={link.to}
                   to={link.to}
-                  className={({ isActive }) =>
-                    `block px-3 py-2 rounded-md text-base font-medium ${
-                      isActive
-                        ? 'bg-purple-100 text-purple-600'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                    } ${link.to === '/admin/dashboard' ? 'flex items-center' : ''}`
-                  }
                   onClick={() => setIsMobileMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `block px-3 py-2 rounded-md text-base font-medium flex items-center ${
+                      isActive ? 'bg-purple-900/50 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                    }`
+                  }
                 >
-                  {link.icon && link.icon}
+                  {link.icon && <span className="mr-2">{link.icon}</span>}
                   {link.label}
                 </NavLink>
               ))}
               {!user && (
-                <>
-                  <NavLink
-                    to="/login"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Sign in
+                <div className="flex items-center justify-center space-x-2">
+                   <NavLink to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                    <motion.button 
+                      whileHover={{ scale: 1.05, y: -1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="w-full text-center px-4 py-2 text-base font-medium text-white bg-gradient-to-r from-purple-600 to-pink-500 rounded-full hover:shadow-lg transition-all duration-300"
+                    >
+                      Login / Register
+                    </motion.button>
                   </NavLink>
-                  <NavLink
-                    to="/signup"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Register
-                  </NavLink>
-                </>
+                </div>
               )}
             </div>
           </motion.div>

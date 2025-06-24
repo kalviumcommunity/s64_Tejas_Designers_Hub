@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from './context/AuthContext';
 import { AnimatePresence } from 'framer-motion';
@@ -28,6 +28,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import OrderSuccess from './pages/OrderSuccess';
 import SellerLayout from './components/SellerLayout';
 import AdminDashboard from './pages/AdminDashboard';
+import Welcome from './components/Welcome';
+import SellerAnalytics from './pages/SellerAnalytics';
 
 // Wrapper component for AnimatePresence
 const AnimatedRoutes = () => {
@@ -163,12 +165,28 @@ const AnimatedRoutes = () => {
             </PageTransition>
           </SellerLayout>
         } />
+        <Route path="/seller-analytics" element={
+          <SellerLayout>
+            <PageTransition>
+              <SellerAnalytics />
+            </PageTransition>
+          </SellerLayout>
+        } />
       </Routes>
     </AnimatePresence>
   );
 };
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000); // Show welcome screen for 3 seconds
+    return () => clearTimeout(timer);
+  }, []);
+
   // To detect if we're on a seller page for conditional navbar rendering
   const MainAppContent = () => {
     const location = useLocation();
@@ -195,7 +213,9 @@ function App() {
       <CartProvider>
         <SearchProvider>
           <Router>
-            <MainAppContent />
+            <AnimatePresence mode="wait">
+              {loading ? <Welcome /> : <MainAppContent />}
+            </AnimatePresence>
           </Router>
         </SearchProvider>
       </CartProvider>

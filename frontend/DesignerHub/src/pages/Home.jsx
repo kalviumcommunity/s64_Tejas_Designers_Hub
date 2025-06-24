@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { motion, useScroll, useTransform } from "framer-motion";
 import QuickView from "../components/QuickView";
+import axios from "axios";
 
 const modelImages = [
   { src: "/src/assets/model1.jpg", alt: "Model 1", className: "home-model-img home-model-img-side" },
@@ -22,7 +23,7 @@ const collectionImages = [
   { src: "/src/assets/col1.jpg", alt: "Dresses Collections", label: "DRESSES COLLECTIONS", link: "/collections/dresses" },
   { src: "/src/assets/col2.jpg", alt: "Tops Collections", label: "TOPS COLLECTIONS", link: "/shop?category=tops" },
   { src: "/src/assets/col3.jpg", alt: "Sweatshirt Collections", label: "SWEATSHIRT COLLECTIONS", link: "/shop?category=sweatshirts" },
-  { src: "/src/assets/col4.jpg", alt: "Jackets Collections", label: "JACKETS COLLECTIONS", center: true, link: "/collections/jackets" },
+  { src: "/src/assets/col4.jpg", alt: "Jackets Collections", label: "JACKETS COLLECTIONS", link: "/collections/jackets" },
   { src: "/src/assets/col5.jpg", alt: "Outwear Collection", label: "OUTWEAR COLLECTION", link: "/shop?category=outwear" },
 ];
 
@@ -36,8 +37,31 @@ const Home = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { scrollYProgress } = useScroll();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('http://localhost:8000/api/products');
+        if (response.data) {
+          // Shuffle products for a dynamic "New Arrivals" section on each visit
+          const shuffled = response.data.sort(() => 0.5 - Math.random());
+          setProducts(shuffled);
+        }
+        setLoading(false);
+      } catch (err) {
+        setError(err.message || 'Failed to fetch products');
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 1.2]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
@@ -80,65 +104,6 @@ const Home = () => {
       title: "Casual",
       image: "/src/assets/casual.jpg",
       link: "/shop?category=casual"
-    }
-  ];
-
-  const products = [
-    {
-      id: 1,
-      name: "ASRV x Equinox Lycra",
-      price: "USD 116.00",
-      image: "/src/assets/product1.jpg",
-      category: "Winter"
-    },
-    {
-      id: 2,
-      name: "ASRV x Equinox Lycra",
-      price: "USD 116.00",
-      image: "/src/assets/product2.jpg",
-      category: "Winter"
-    },
-    {
-      id: 3,
-      name: "ASRV x Equinox Lycra",
-      price: "USD 116.00",
-      image: "/src/assets/product3.jpg",
-      category: "Winter"
-    },
-    {
-      id: 4,
-      name: "ASRV x Equinox Lycra",
-      price: "USD 116.00",
-      image: "/src/assets/product4.jpg",
-      category: "Winter"
-    },
-    {
-      id: 5,
-      name: "ASRV x Equinox Lycra",
-      price: "USD 116.00",
-      image: "/src/assets/product5.jpg",
-      category: "Winter"
-    },
-    {
-      id: 6,
-      name: "ASRV x Equinox Lycra",
-      price: "USD 116.00",
-      image: "/src/assets/product6.jpg",
-      category: "Winter"
-    },
-    {
-      id: 7,
-      name: "ASRV x Equinox Lycra",
-      price: "USD 116.00",
-      image: "/src/assets/product7.jpg",
-      category: "Winter"
-    },
-    {
-      id: 8,
-      name: "ASRV x Equinox Lycra",
-      price: "USD 116.00",
-      image: "/src/assets/product8.jpg",
-      category: "Winter"
     }
   ];
 
@@ -249,416 +214,126 @@ const Home = () => {
                 background: `rgba(${Math.random() * 100 + 155}, ${Math.random() * 100 + 100}, ${Math.random() * 155 + 100}, ${Math.random() * 0.4 + 0.2})`,
               }}
               animate={{
-                y: [0, Math.random() * -50 - 20, 0],
-                x: [0, Math.random() * 40 - 20, 0],
-                opacity: [0, Math.random() * 0.5 + 0.3, 0],
-                scale: [0, Math.random() * 1 + 0.5, 0],
+                x: (Math.random() - 0.5) * 40,
+                y: (Math.random() - 0.5) * 40,
+                scale: [1, 1.2, 1],
+                opacity: [0, 1, 0]
               }}
               transition={{
-                duration: Math.random() * 5 + 10,
+                duration: Math.random() * 5 + 3,
                 repeat: Infinity,
-                delay: Math.random() * 5,
-                ease: "easeInOut",
+                delay: Math.random() * 2
               }}
             />
           ))}
         </div>
-        <motion.div 
-          className="absolute top-0 left-0 w-40 h-40 bg-purple-600 rounded-full opacity-20 blur-xl"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.2, 0.3, 0.2],
-            y: [0, 15, 0],
-            x: [0, 10, 0]
-          }}
-          transition={{ 
-            duration: 12, 
-            repeat: Infinity, 
-            ease: "easeInOut",
-            times: [0, 0.5, 1]
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-0 right-10 w-56 h-56 bg-indigo-700 rounded-full opacity-20 blur-xl"
-          animate={{ 
-            scale: [1, 1.15, 1],
-            opacity: [0.2, 0.15, 0.2],
-            y: [0, -20, 0],
-            x: [0, -15, 0]
-          }}
-          transition={{ 
-            duration: 14, 
-            repeat: Infinity, 
-            ease: "easeInOut",
-            times: [0, 0.5, 1],
-            delay: 0.5
-          }}
-        />
-        <motion.div 
-          className="absolute top-1/4 right-1/4 w-28 h-28 bg-pink-600 rounded-full opacity-15 blur-xl"
-          animate={{ 
-            y: [0, -25, 0], 
-            x: [0, 15, 0],
-            scale: [1, 1.25, 1],
-            opacity: [0.15, 0.25, 0.15]
-          }}
-          transition={{ 
-            duration: 10, 
-            repeat: Infinity, 
-            ease: "easeInOut",
-            times: [0, 0.5, 1],
-            delay: 1
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-1/3 left-1/4 w-20 h-20 opacity-30"
-          style={{ 
-            background: "radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%)" 
-          }}
-          animate={{ 
-            scale: [1, 1.5, 1], 
-            opacity: [0.3, 0.15, 0.3],
-            y: [0, 30, 0],
-            x: [0, -10, 0]
-          }}
-          transition={{ 
-            duration: 8, 
-            repeat: Infinity, 
-            ease: "easeInOut",
-            times: [0, 0.5, 1],
-            delay: 1.5
-          }}
-        />
-        
-        <motion.h2 
-          className="text-4xl md:text-6xl text-center mb-20 text-white relative z-10"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 1, 
-            ease: [0.25, 0.1, 0.25, 1] 
-          }}
-          viewport={{ once: true }}
-        >
-          <motion.span 
-            className="bold-title block" 
-            data-text="DISCOVER YOUR STYLE"
-            initial={{ letterSpacing: "0.01em" }}
-            whileInView={{ letterSpacing: "0.08em" }}
-            transition={{ 
-              duration: 1.2, 
-              ease: [0.215, 0.61, 0.355, 1],
-              delay: 0.2 
-            }}
-          >
-            <motion.span
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-            >
-              DISCOVER
-            </motion.span>{" "}
-            <motion.span 
-              className="text-accent"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.7 }}
-            >
-              YOUR
-            </motion.span>{" "}
-            <motion.span
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 1 }}
-            >
-              STYLE
-            </motion.span>
-            <motion.div
-              className="absolute -bottom-4 left-0 w-full h-2 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500"
-              initial={{ width: 0, opacity: 0 }}
-              whileInView={{ width: "100%", opacity: 1 }}
-              transition={{ 
-                delay: 1.3, 
-                duration: 1,
-                ease: [0.215, 0.61, 0.355, 1]
-              }}
-            />
-            <motion.div
-              className="absolute -bottom-4 left-0 w-full h-2"
-              style={{ 
-                backgroundImage: "linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)",
-                backgroundSize: "200% 100%"
-              }}
-              initial={{ x: "-100%" }}
-              whileInView={{ x: "100%" }}
-              transition={{ 
-                delay: 2.3, 
-                duration: 1.5,
-                ease: "easeInOut" 
-              }}
-            />
-          </motion.span>
-        </motion.h2>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-          {categories.map((category, index) => (
-            <motion.div
-              key={category.title}
-              className="relative group cursor-pointer"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ 
-                opacity: 1, 
-                y: 0,
-                transition: { 
-                  duration: 0.8, 
-                  delay: index * 0.2,
-                  ease: [0.25, 0.1, 0.25, 1]
-                }
-              }}
-              whileHover={{ 
-                y: -15,
-                transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }
-              }}
-              viewport={{ once: true }}
-              onClick={() => navigate(category.link)}
-            >
-              <div className="relative overflow-hidden rounded-xl aspect-[3/4]">
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-transparent to-indigo-900/30 z-10 opacity-0"
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-                <motion.img
-                  src={category.image}
-                  alt={category.title}
-                  className="w-full h-full object-cover"
-                  whileHover={{ 
-                    scale: 1.12,
-                    transition: { duration: 1.5, ease: [0.25, 0.1, 0.25, 1] } 
-                  }}
-                />
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10"
-                  initial={{ opacity: 0.7 }}
-                  whileHover={{ opacity: 0.9 }}
-                  transition={{ duration: 0.6 }}
-                />
-                
-                <motion.div
-                  className="absolute inset-0 z-20 flex flex-col justify-end p-6"
-                  initial={{ opacity: 1 }}
-                  whileHover={{ opacity: 1 }}
-                >
-                  <motion.h3 
-                    className="text-2xl font-bold text-white mb-3"
-                    initial={{ y: 0 }}
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {category.title}
-                  </motion.h3>
-                  
-                  <motion.div
-                    className="overflow-hidden h-8"
-                    initial={{ height: 0 }}
-                    whileHover={{ height: "auto" }}
-                    transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-                  >
-                    <motion.p 
-                      className="text-gray-200 flex items-center gap-2 text-sm"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileHover={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.1 }}
-                    >
-                      Explore Collection 
-                      <motion.span
-                        initial={{ x: 0 }}
-                        whileHover={{ x: 5 }}
-                        transition={{ repeat: Infinity, repeatType: "mirror", duration: 0.8 }}
-                      >
-                        →
-                      </motion.span>
-                    </motion.p>
-                  </motion.div>
-                </motion.div>
-                
-                <motion.div 
-                  className="absolute inset-0 border-2 border-purple-300/0 rounded-xl z-20"
-                  initial={{ borderColor: "rgba(216, 180, 254, 0)" }}
-                  whileHover={{ 
-                    borderColor: "rgba(216, 180, 254, 0.3)",
-                    borderWidth: "3px",
-                    boxShadow: "inset 0 0 20px rgba(139, 92, 246, 0.3)"
-                  }}
-                  transition={{ duration: 0.5 }}
-                />
-              </div>
-              
-              <motion.div
-                className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-[85%] h-10 bg-black/20 blur-md rounded-full"
-                initial={{ opacity: 0.3, width: "60%" }}
-                whileHover={{ opacity: 0.5, width: "95%" }}
-                transition={{ duration: 0.4 }}
-              />
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
 
-      {/* New Arrivals */}
-      <motion.section 
-        className="py-20 px-4 bg-white relative"
-        variants={staggerContainer}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-      >
-        <div className="relative mb-20">
+        <div className="relative z-20 max-w-7xl mx-auto text-center">
           <motion.h2 
-            className="text-4xl md:text-5xl font-bold text-center mb-6 text-gray-800"
+            className="text-4xl md:text-5xl font-extrabold mb-4 text-white"
             variants={fadeInUp}
           >
-            New Arrivals
+            Explore by <span className="gradient-text">Category</span>
           </motion.h2>
-          <motion.div 
-            className="w-full max-w-xl mx-auto h-0.5 bg-gray-300 relative"
-            initial={{ width: 0 }}
-            whileInView={{ width: "100%" }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            viewport={{ once: true }}
+          <motion.p 
+            className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto"
+            variants={fadeInUp}
           >
-            <motion.div 
-              className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-24 h-4 bg-white"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              viewport={{ once: true }}
-            />
-            <motion.div 
-              className="absolute top-0 left-0 right-0 h-full"
-              style={{
-                background: "linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent)",
-                backgroundSize: "200% 100%"
-              }}
-              animate={{ 
-                backgroundPosition: ["0% 0%", "100% 0%"]
-              }}
-              transition={{
-                duration: 2,
-                ease: "easeInOut",
-                repeat: Infinity,
-                repeatType: "reverse"
-              }}
-            />
-          </motion.div>
-        </div>
-        
-        <motion.div 
-          className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mt-12"
-          variants={staggerContainer}
-        >
-          {products.map((product, index) => (
-            <motion.div
-              key={product.id}
-              className="group relative bg-white rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500"
-              whileHover={{ y: -8 }}
-              onClick={() => handleQuickView(product)}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ 
-                delay: index * 0.1, 
-                duration: 0.6,
-                ease: [0.25, 0.1, 0.25, 1]
-              }}
-            >
-              {/* Product Image */}
-              <div className="aspect-[3/4] overflow-hidden relative">
-                <motion.img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                  layoutId={`product-image-${product.id}`}
-                  whileHover={{ scale: 1.08 }}
-                  transition={{ duration: 0.7, ease: "easeOut" }}
-                />
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.4 }}
-                />
-                
-                {/* Quick actions on hover */}
-                <motion.div
-                  className="absolute top-4 right-4 space-y-2"
-                  initial={{ opacity: 0, x: 20 }}
-                  whileHover={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <motion.button
-                    className="w-9 h-9 rounded-full bg-white/90 shadow-md flex items-center justify-center"
-                    whileHover={{ scale: 1.1, backgroundColor: "rgba(255, 255, 255, 1)" }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Add to wishlist
-                    }}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                    </svg>
-                  </motion.button>
-                </motion.div>
-              </div>
-
-              {/* Product Info */}
-              <motion.div className="p-4 bg-white">
-                <div className="mb-1">
-                  <span className="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">
-                    {product.category}
-                  </span>
-                </div>
-                <h3 className="text-sm font-semibold text-gray-900">{product.name}</h3>
-                <div className="mt-2 flex items-center justify-between">
-                  <p className="text-sm font-medium text-gray-900">{product.price}</p>
-                  <motion.button
-                    whileHover={{ scale: 1.1, backgroundColor: "#8b5cf6", color: "#ffffff" }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-700 transition-all duration-300"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Add to cart
-                    }}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                    </svg>
-                  </motion.button>
+            Find your perfect look from our curated collections, designed for every style and occasion.
+          </motion.p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {categories.map((category, index) => (
+              <motion.div
+                key={index}
+                className="relative rounded-lg overflow-hidden group category-card"
+                variants={fadeInUp}
+                onClick={() => handleCollectionClick(category.link)}
+              >
+                <img src={category.image} alt={category.title} className="w-full h-80 object-cover transform transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <h3 className="text-white text-2xl font-bold uppercase tracking-widest">{category.title}</h3>
                 </div>
               </motion.div>
-              
-              {/* Bottom border accent */}
-              <motion.div 
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-blue-500"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-              
-              {/* Shadow overlay on hover */}
-              <motion.div
-                className="absolute inset-0 pointer-events-none rounded-xl"
-                initial={{ opacity: 0 }}
-                whileHover={{ 
-                  opacity: 1,
-                  boxShadow: "inset 0 0 20px rgba(139, 92, 246, 0.15), 0 10px 30px -10px rgba(0, 0, 0, 0.2)"
-                }}
-                transition={{ duration: 0.4 }}
-              />
-            </motion.div>
-          ))}
-        </motion.div>
+            ))}
+          </div>
+        </div>
       </motion.section>
+
+      {/* New Arrivals Section */}
+      <section className="py-20 bg-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            className="text-center mb-16"
+            variants={fadeInUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">
+              <span className="gradient-text">New</span> Arrivals
+            </h2>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+              Check out the latest drops from top brands, curated just for you.
+            </p>
+          </motion.div>
+          
+          {loading && (
+            <div className="text-center">Loading products...</div>
+          )}
+
+          {error && (
+            <div className="text-center text-red-500">Error: {error}</div>
+          )}
+
+          {!loading && !error && (
+            <motion.div 
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
+            >
+              {products.slice(0, 4).map((product, index) => (
+                <motion.div
+                  key={product._id || index}
+                  className="product-card-container"
+                  variants={fadeInUp}
+                >
+                  <div className="relative overflow-hidden rounded-lg group product-card h-full">
+                    <img
+                      src={product.images && product.images.length > 0 ? product.images[0].url : 'https://via.placeholder.com/300'}
+                      alt={product.name}
+                      className="w-full h-full object-cover object-center transform transition-transform duration-500 ease-in-out group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-0 left-0 p-4 w-full flex-col items-start justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      <button
+                        onClick={() => handleQuickView(product)}
+                        className="w-full bg-purple-600 text-white py-2 px-4 rounded-md text-sm font-semibold hover:bg-purple-700 transition-colors"
+                      >
+                        Quick View
+                      </button>
+                    </div>
+                  </div>
+                  <div className="mt-4 text-center">
+                    <h3 className="text-sm text-gray-300">{product.name}</h3>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          <div className="mt-16 text-center">
+            <button 
+              className="shop-all-btn"
+              onClick={handleShopNowClick}
+            >
+              <span>Shop All New Arrivals</span>
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="ml-2"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
+            </button>
+          </div>
+        </div>
+      </section>
 
       {/* Newsletter Section */}
       <motion.section 
@@ -804,7 +479,7 @@ const Home = () => {
           {collectionImages.map((collection, i) => (
             <motion.div 
               key={i} 
-              className={`relative group cursor-pointer ${collection.center ? 'md:col-span-2 md:row-span-2' : ''}`}
+              className="relative group cursor-pointer"
               onClick={() => handleCollectionClick(collection.link)}
               whileHover={{ scale: 1.02 }}
               initial={{ opacity: 0, y: 20 }}
@@ -1003,11 +678,13 @@ const Home = () => {
       </motion.div>
 
       {/* Quick View Modal */}
-      <QuickView
-        product={selectedProduct}
-        isOpen={isQuickViewOpen}
-        onClose={() => setIsQuickViewOpen(false)}
-      />
+      {isQuickViewOpen && selectedProduct && (
+        <QuickView
+          product={selectedProduct}
+          isOpen={isQuickViewOpen}
+          onClose={() => setIsQuickViewOpen(false)}
+        />
+      )}
     </div>
   );
 };
