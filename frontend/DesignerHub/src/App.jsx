@@ -41,10 +41,10 @@ const AnimatedRoutes = () => {
   };
 
   // Check if the current route is a seller route
-  const isSellerRoute = location.pathname.startsWith('/seller-');
+  // const isSellerRoute = location.pathname.startsWith('/seller-');
   
-  // Check if the current route is an admin route
-  const isAdminRoute = location.pathname.startsWith('/admin');
+  // // Check if the current route is an admin route
+  // const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <AnimatePresence mode="wait">
