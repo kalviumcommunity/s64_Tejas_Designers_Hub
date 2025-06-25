@@ -24,7 +24,7 @@ const SellerProducts = () => {
     const fetchProducts = async () => {
       try {
         const token = localStorage.getItem('sellerToken');
-        const res = await axios.get("http://localhost:8000/api/products", {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
