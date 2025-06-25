@@ -653,7 +653,7 @@ const Home = () => {
           </motion.span>
           <div className="flex flex-col md:flex-row gap-8 items-center">
             <motion.img 
-              src="/src/assets/about-model.jpg" 
+              src="/assets/about-model.jpg" 
               alt="About Us Model" 
               className="w-full md:w-1/2 rounded-lg shadow-lg"
               initial={{ x: -50, opacity: 0 }}
