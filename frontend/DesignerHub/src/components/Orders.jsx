@@ -31,7 +31,7 @@ const Orders = () => {
         try {
           // Try main endpoint first
           console.log("Fetching orders from API...");
-          const response = await fetch('http://localhost:8000/api/orders/user', {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/user`, {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Accept': 'application/json'
@@ -43,7 +43,7 @@ const Orders = () => {
           if (!response.ok) {
             // If failed, try the test endpoint
             console.log("Testing API connection...");
-            const testResponse = await fetch('http://localhost:8000/api/orders/test');
+            const testResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/test`);
             
             if (!testResponse.ok) {
               console.error("API test endpoint also failed:", testResponse.status);
@@ -183,7 +183,7 @@ const Orders = () => {
                       <div key={index} className="item-row">
                         <div className="item-image">
                           {item.product?.images?.[0] ? (
-                            <img src={`http://localhost:8000/uploads/${item.product.images[0]}`} alt={item.product.name} />
+                            <img src={`${import.meta.env.VITE_API_URL}/uploads/${item.product.images[0]}`} alt={item.product.name} />
                           ) : (
                             <div className="placeholder-image">No Image</div>
                           )}

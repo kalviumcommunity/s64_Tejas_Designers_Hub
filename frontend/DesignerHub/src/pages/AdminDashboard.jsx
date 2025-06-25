@@ -65,7 +65,7 @@ const AdminDashboard = () => {
 
       // Fetch all users (regular users, not sellers)
       const usersResponse = await axios.get(
-        'http://localhost:8000/api/admin/users',
+        `${import.meta.env.VITE_API_URL}/api/admin/users`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -73,7 +73,7 @@ const AdminDashboard = () => {
 
       // Fetch all products
       const productsResponse = await axios.get(
-        'http://localhost:8000/api/admin/products',
+        `${import.meta.env.VITE_API_URL}/api/admin/products`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -81,7 +81,7 @@ const AdminDashboard = () => {
 
       // Fetch all orders
       const ordersResponse = await axios.get(
-        'http://localhost:8000/api/admin/orders',
+        `${import.meta.env.VITE_API_URL}/api/admin/orders`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }

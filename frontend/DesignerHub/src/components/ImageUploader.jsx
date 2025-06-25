@@ -62,7 +62,7 @@ const ImageUploader = ({ onImagesUploaded, maxImages = 5 }) => {
       console.log('Using token for upload:', token ? 'Yes (token exists)' : 'No token found');
       
       const response = await axios.post(
-        'http://localhost:8000/api/products/upload',
+        `${import.meta.env.VITE_API_URL}/api/products/upload`,
         formData,
         {
           headers: {
