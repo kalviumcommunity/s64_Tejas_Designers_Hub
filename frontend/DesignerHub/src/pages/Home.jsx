@@ -301,7 +301,7 @@ const Home = () => {
                 >
                   <div className="relative overflow-hidden rounded-lg group product-card h-full">
                     <img
-                      src={product.images && product.images.length > 0 ? product.images[0].url : 'https://via.placeholder.com/300'}
+                      src={product.images && product.images.length > 0 ? product.images[0].url : "https://picsum.photos/300"}
                       alt={product.name}
                       className="w-full h-full object-cover object-center transform transition-transform duration-500 ease-in-out group-hover:scale-110"
                     />

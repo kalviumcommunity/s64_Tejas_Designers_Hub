@@ -143,7 +143,7 @@ const Shop = () => {
       id: product._id,
       name: product.name,
       price: product.price,
-      image: product.images && product.images.length > 0 ? product.images[0].url : 'https://via.placeholder.com/300',
+      image: product.images && product.images.length > 0 ? product.images[0].url : 'https://picsum.photos/300',
       size: product.sizes && product.sizes.length > 0 ? product.sizes[0] : '', 
       category: product.category,
       quantity: 1
@@ -323,11 +323,11 @@ const Shop = () => {
               </button>
               <div className="product-image-container">
                 <img 
-                  src={product.images && product.images.length > 0 ? product.images[0].url : 'https://via.placeholder.com/400'}
+                  src={product.images && product.images.length > 0 ? product.images[0].url : "https://picsum.photos/400"}
                   alt={product.name} 
                   className="product-image"
                   onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/400';
+                    e.target.src = "https://picsum.photos/400";
                   }}
                   loading="lazy"
                 />
