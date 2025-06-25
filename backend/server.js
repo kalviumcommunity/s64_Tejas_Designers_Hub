@@ -31,7 +31,7 @@ if (!fs.existsSync(uploadPath)) {
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://designerhubbb.netlify.app'],
+  origin: ['https://localhost:5173', 'https://designerhubbb.netlify.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
