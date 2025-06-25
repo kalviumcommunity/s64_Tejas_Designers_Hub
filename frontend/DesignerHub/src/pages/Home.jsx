@@ -47,7 +47,7 @@ const Home = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('https://s64-tejas-designers-hub-1.onrender.com/products');
+        const response = await axios.get('http://localhost:8000/api/products');
         if (response.data) {
           // Shuffle products for a dynamic "New Arrivals" section on each visit
           const shuffled = response.data.sort(() => 0.5 - Math.random());
