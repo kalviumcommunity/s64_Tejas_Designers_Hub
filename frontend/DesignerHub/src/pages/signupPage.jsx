@@ -73,7 +73,7 @@ export default function Signup() {
     <div className="signup-root">
       <div className="signup-card">
         <div className="signup-image-side">
-          <img src="/src/assets/signup-side.jpg" alt="Signup Visual" className="signup-image-main" />
+          <img src="/assets/signup-side.jpg" alt="Signup Visual" className="signup-image-main" />
           <div className="signup-image-label">WELCOME!</div>
         </div>
         <div className="signup-form-side">

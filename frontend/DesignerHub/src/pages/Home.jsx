@@ -7,30 +7,30 @@ import QuickView from "../components/QuickView";
 import axios from "axios";
 
 const modelImages = [
-  { src: "/src/assets/model1.jpg", alt: "Model 1", className: "home-model-img home-model-img-side" },
-  { src: "/src/assets/model2.jpg", alt: "Model 2", className: "home-model-img home-model-img-mid" },
-  { src: "/src/assets/model3.jpg", alt: "Model 3", className: "home-model-img home-model-img-center" },
-  { src: "/src/assets/model4.jpg", alt: "Model 4", className: "home-model-img home-model-img-mid" },
-  { src: "/src/assets/model5.jpg", alt: "Model 5", className: "home-model-img home-model-img-side" },
+  { src: "/assets/model1.jpg", alt: "Model 1", className: "home-model-img home-model-img-side" },
+  { src: "/assets/model2.jpg", alt: "Model 2", className: "home-model-img home-model-img-mid" },
+  { src: "/assets/model3.jpg", alt: "Model 3", className: "home-model-img home-model-img-center" },
+  { src: "/assets/model4.jpg", alt: "Model 4", className: "home-model-img home-model-img-mid" },
+  { src: "/assets/model5.jpg", alt: "Model 5", className: "home-model-img home-model-img-side" },
 ];
 
 const summerProducts = [
-  { src: "/src/assets/summer1.jpg", alt: "Summer Product 1" },
-  { src: "/src/assets/summer2.jpg", alt: "Summer Product 2" },
+  { src: "/assets/summer1.jpg", alt: "Summer Product 1" },
+  { src: "/assets/summer2.jpg", alt: "Summer Product 2" },
 ];
 
 const collectionImages = [
-  { src: "/src/assets/col1.jpg", alt: "Dresses Collections", label: "DRESSES COLLECTIONS", link: "/collections/dresses" },
-  { src: "/src/assets/col2.jpg", alt: "Tops Collections", label: "TOPS COLLECTIONS", link: "/shop?category=tops" },
-  { src: "/src/assets/col3.jpg", alt: "Sweatshirt Collections", label: "SWEATSHIRT COLLECTIONS", link: "/shop?category=sweatshirts" },
-  { src: "/src/assets/col4.jpg", alt: "Jackets Collections", label: "JACKETS COLLECTIONS", link: "/collections/jackets" },
-  { src: "/src/assets/col5.jpg", alt: "Outwear Collection", label: "OUTWEAR COLLECTION", link: "/shop?category=outwear" },
+  { src: "/assets/col1.jpg", alt: "Dresses Collections", label: "DRESSES COLLECTIONS", link: "/collections/dresses" },
+  { src: "/assets/col2.jpg", alt: "Tops Collections", label: "TOPS COLLECTIONS", link: "/shop?category=tops" },
+  { src: "/assets/col3.jpg", alt: "Sweatshirt Collections", label: "SWEATSHIRT COLLECTIONS", link: "/shop?category=sweatshirts" },
+  { src: "/assets/col4.jpg", alt: "Jackets Collections", label: "JACKETS COLLECTIONS", link: "/collections/jackets" },
+  { src: "/assets/col5.jpg", alt: "Outwear Collection", label: "OUTWEAR COLLECTION", link: "/shop?category=outwear" },
 ];
 
 const brands = [
-  { src: "/src/assets/brand-levis.png", alt: "Levis" },
-  { src: "/src/assets/brand-zara.png", alt: "Zara" },
-  { src: "/src/assets/brand-gucci.png", alt: "Gucci" },
+  { src: "/assets/brand-levis.png", alt: "Levis" },
+  { src: "/assets/brand-zara.png", alt: "Zara" },
+  { src: "/assets/brand-gucci.png", alt: "Gucci" },
 ];
 
 const Home = () => {
@@ -92,17 +92,17 @@ const Home = () => {
   const categories = [
     {
       title: "Streetwear",
-      image: "/src/assets/streetwear.jpg",
+      image: "/assets/streetwear.jpg",
       link: "/shop?category=streetwear"
     },
     {
       title: "Activewear",
-      image: "/src/assets/activewear.jpg",
+      image: "/assets/activewear.jpg",
       link: "/shop?category=activewear"
     },
     {
       title: "Casual",
-      image: "/src/assets/casual.jpg",
+      image: "/assets/casual.jpg",
       link: "/shop?category=casual"
     }
   ];

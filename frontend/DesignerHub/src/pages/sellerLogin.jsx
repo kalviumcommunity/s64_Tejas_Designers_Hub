@@ -48,7 +48,7 @@ export default function SellerLogin() {
     <div className="seller-login-root">
       <div className="seller-login-card">
         <div className="seller-login-image-side">
-          <img src="/src/assets/seller-login.jpg" alt="Seller Motivation" className="seller-login-image-main" />
+          <img src="/assets/seller-login.jpg" alt="Seller Motivation" className="seller-login-image-main" />
           <div className="seller-login-image-label">Grow Your Brand</div>
         </div>
         <div className="seller-login-form-side">
