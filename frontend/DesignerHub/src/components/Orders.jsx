@@ -31,7 +31,7 @@ const Orders = () => {
         try {
           // Try main endpoint first
           console.log("Fetching orders from API...");
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/user`, {
+          const response = await fetch('https://s64-tejas-designers-hub-1.onrender.com/api/orders/user', {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Accept': 'application/json'
