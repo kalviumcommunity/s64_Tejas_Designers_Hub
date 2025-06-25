@@ -112,7 +112,7 @@ const SellerProducts = () => {
       let response;
       if (editProductId) {
         // Update existing product
-        response = await axios.patch(`http://localhost:8000/api/products/${editProductId}`, data, {
+        response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/products/${editProductId}`, data, {
           headers: {
             "Content-Type": "multipart/form-data",
             "Authorization": `Bearer ${token}`
@@ -122,7 +122,7 @@ const SellerProducts = () => {
         toast.success("Product updated successfully!");
       } else {
         // Create new product
-        response = await axios.post("http://localhost:8000/api/products", data, {
+        response = await axios.post(`${import.meta.env.VITE_API_URL}/api/products`, data, {
           headers: {
             "Content-Type": "multipart/form-data",
             "Authorization": `Bearer ${token}`
@@ -159,7 +159,7 @@ const SellerProducts = () => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
     try {
       const token = localStorage.getItem('sellerToken');
-      await axios.delete(`http://localhost:8000/api/products/${productId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/products/${productId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProducts((prev) => prev.filter((p) => p._id !== productId));
@@ -359,8 +359,8 @@ const SellerProducts = () => {
                     product.images && product.images.length > 0
                       ? typeof product.images[0] === 'string'
                         ? product.images[0]
-                        : product.images[0].url || 'https://via.placeholder.com/300'
-                      : 'https://via.placeholder.com/300'
+                        : product.images[0].url || 'https://picsum.photos/300'
+                      : 'https://picsum.photos/300'
                   }
                     alt={product.name}
                     className="w-full h-full object-cover"

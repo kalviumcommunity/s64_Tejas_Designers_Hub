@@ -20,7 +20,7 @@ const ProductDetail = () => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:8000/api/products/${id}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${id}`);
         
         if (response.data) {
           setProduct(response.data);
@@ -73,7 +73,7 @@ const ProductDetail = () => {
       id: product._id,
       name: product.name,
       price: product.price,
-      image: mainImage || (product.images[0]?.url || 'https://via.placeholder.com/500'),
+      image: mainImage || (product.images[0]?.url || 'https://picsum.photos/500'),
       size: selectedSize,
       category: product.category,
       quantity: quantity
@@ -116,10 +116,10 @@ const ProductDetail = () => {
         <div className="product-images">
           <div className="main-image">
             <img 
-              src={mainImage || (product.images[0]?.url || 'https://via.placeholder.com/500')} 
+              src={mainImage || (product.images[0]?.url || 'https://picsum.photos/500')} 
               alt={product.name}
               onError={(e) => {
-                e.target.src = 'https://via.placeholder.com/500';
+                e.target.src = 'https://picsum.photos/500';
               }}
             />
           </div>
@@ -135,7 +135,7 @@ const ProductDetail = () => {
                     src={image.url} 
                     alt={`${product.name} - view ${index + 1}`}
                     onError={(e) => {
-                      e.target.src = 'https://via.placeholder.com/100';
+                      e.target.src = 'https://picsum.photos/100';
                     }}
                   />
                 </div>

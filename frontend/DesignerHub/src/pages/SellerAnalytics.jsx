@@ -26,19 +26,19 @@ const SellerAnalytics = () => {
         const sellerId = sellerInfo.id || sellerInfo._id;
 
         // Fetch sales by month
-        const salesRes = await axios.get(`http://localhost:8000/api/analytics/seller/${sellerId}/sales`, {
+        const salesRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/analytics/seller/${sellerId}/sales`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSalesData(salesRes.data || []);
 
         // Fetch orders by month
-        const ordersRes = await axios.get(`http://localhost:8000/api/analytics/seller/${sellerId}/orders`, {
+        const ordersRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/analytics/seller/${sellerId}/orders`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setOrdersData(ordersRes.data || []);
 
         // Fetch product category breakdown
-        const catRes = await axios.get(`http://localhost:8000/api/analytics/seller/${sellerId}/categories`, {
+        const catRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/analytics/seller/${sellerId}/categories`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setCategoryData(catRes.data || []);

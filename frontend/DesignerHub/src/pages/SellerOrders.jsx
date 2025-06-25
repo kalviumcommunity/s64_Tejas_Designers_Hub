@@ -53,7 +53,7 @@ const SellerOrders = () => {
         
         console.log(`Fetching orders for seller ID: ${sellerId}`);
         
-        const res = await axios.get(`http://localhost:8000/api/orders/seller/${sellerId}`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/orders/seller/${sellerId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         

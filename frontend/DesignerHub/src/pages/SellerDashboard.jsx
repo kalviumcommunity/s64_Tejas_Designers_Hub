@@ -37,7 +37,7 @@ const SellerDashboard = () => {
       
       // Fetch recent orders
       const ordersResponse = await axios.get(
-        `http://localhost:8000/api/orders/seller/${sellerId}/recent?limit=10`, 
+        `${import.meta.env.VITE_API_URL}/api/orders/seller/${sellerId}/recent?limit=10`, 
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -45,7 +45,7 @@ const SellerDashboard = () => {
       
       // Fetch products for this seller
       const productsResponse = await axios.get(
-        `http://localhost:8000/api/products/seller/${sellerId}`,
+        `${import.meta.env.VITE_API_URL}/api/products/seller/${sellerId}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -60,7 +60,7 @@ const SellerDashboard = () => {
       
       // Fetch all orders to calculate totals
       const allOrdersResponse = await axios.get(
-        `http://localhost:8000/api/orders/seller/${sellerId}`,
+        `${import.meta.env.VITE_API_URL}/api/orders/seller/${sellerId}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }

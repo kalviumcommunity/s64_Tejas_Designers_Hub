@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
 
       // Regardless of localStorage data, still try to fetch from server for freshness
       console.log("Fetching user profile from server");
-      const response = await fetch('http://localhost:8000/api/auth/profile', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/profile`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json'

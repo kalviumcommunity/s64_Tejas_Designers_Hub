@@ -57,7 +57,7 @@ const AdminDashboard = () => {
 
       // Fetch all sellers
       const sellersResponse = await axios.get(
-        'http://localhost:8000/api/admin/sellers',
+        `${import.meta.env.VITE_API_URL}/api/admin/sellers`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }

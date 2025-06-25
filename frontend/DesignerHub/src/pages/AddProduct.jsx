@@ -83,7 +83,7 @@ const AddProduct = ({ onAddProduct }) => {
       
       const token = localStorage.getItem('sellerToken');
       const response = await axios.post(
-        'http://localhost:8000/api/products/json',
+        `${import.meta.env.VITE_API_URL}/api/products/json`,
         productData,
         {
           headers: {

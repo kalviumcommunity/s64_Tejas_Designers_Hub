@@ -278,7 +278,7 @@ const Checkout = () => {
       // Send order to backend
       console.log("Sending order to API with token:", token.substring(0, 10) + "...");
       
-      const response = await axios.post('http://localhost:8000/api/orders', orderData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/orders`, orderData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

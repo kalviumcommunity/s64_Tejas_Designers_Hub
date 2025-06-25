@@ -18,7 +18,7 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/auth/login', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ export default function Login() {
             onClick={() => navigate("/")}
             disabled={isLoading}
           >
-            <img src="/src/assets/google-icon.png" alt="Google" className="login-google-icon" />
+            <img src="/assets/google-icon.png" alt="Google" className="login-google-icon" />
             Google
           </button>
           <div className="login-signup-row">
@@ -128,7 +128,7 @@ export default function Login() {
         <div className="login-image-side">
           <div className="login-image-bg" />
           <div className="login-image-overlay" />
-          <img src="/src/assets/login-side.jpg" alt="Login Visual" className="login-image-main" />
+          <img src="/assets/login-side.jpg" alt="Login Visual" className="login-image-main" />
         </div>
       </div>
     </div>

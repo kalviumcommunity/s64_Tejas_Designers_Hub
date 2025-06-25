@@ -38,7 +38,7 @@ export default function SellerSignup() {
 
     try {
       setIsLoading(true);
-      const response = await axios.post('http://localhost:8000/api/auth/seller/signup', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/seller/signup`, {
         shopName: form.shopName,
         ownerName: form.ownerName,
         email: form.email,

@@ -66,7 +66,7 @@ const SellerProfile = () => {
         // Make API call to get seller profile
         console.log("Fetching seller profile from API...");
         const response = await axios.get(
-          `http://localhost:8000/api/seller-auth/${sellerId}`,
+          `${import.meta.env.VITE_API_URL}/api/seller-auth/${sellerId}`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }
@@ -189,7 +189,7 @@ const SellerProfile = () => {
       // Try to update via API
       try {
         const response = await axios.put(
-          `http://localhost:8000/api/seller-auth/${sellerId}`,
+          `${import.meta.env.VITE_API_URL}/api/seller-auth/${sellerId}`,
           formattedData,
           {
             headers: { 
