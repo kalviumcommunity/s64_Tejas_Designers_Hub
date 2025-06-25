@@ -121,7 +121,7 @@ const Home = () => {
       >
         <div className="absolute inset-0 z-0">
           <video autoPlay muted loop playsInline className="hero-video">
-            <source src="/src/assets/hero-video.mp4" type="video/mp4" />
+            <source src="/assets/hero-video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <motion.div 
