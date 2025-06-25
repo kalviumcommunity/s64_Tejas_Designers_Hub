@@ -126,3 +126,5 @@ DesignerHub brings the fashion world online, creating a vibrant and user-friendl
 
 ---
 
+Deploy link (Backend)--- https://s64-tejas-designers-hub-1.onrender.com
+deploy link (Frontend)---https://designerh.netlify.app
